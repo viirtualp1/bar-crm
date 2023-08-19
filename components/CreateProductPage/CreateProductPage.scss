@@ -1,0 +1,18 @@
+.create-product-page {
+  margin-top: 12px;
+
+  &__title {
+    font-size: 22px;
+    margin-top: 20px;
+    margin-left: 12px;
+  }
+
+  &__row {
+    max-width: 400px;
+    margin: auto;
+  }
+
+  &__back {
+    margin-left: 12px;
+  }
+}

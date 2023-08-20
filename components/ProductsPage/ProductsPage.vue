@@ -1,5 +1,7 @@
 <template>
   <v-container class="mt-3">
+    <h2 class="ml-3 mb-3">{{ title }}</h2>
+
     <v-row>
       <template v-if="isLoading">
         <v-col v-for="i in 3" :key="i" cols="12" md="4">
@@ -14,17 +16,34 @@
 
       <template v-else>
         <template v-for="drink in drinks" :key="drink.id">
-          <v-col v-if="drink.name" cols="12" md="4">
+          <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
             <drink-card v-if="drink.name" :drink="drink" />
           </v-col>
         </template>
+
         <template v-for="snack in snacks" :key="snack.id">
-          <v-col v-if="snack.name" cols="12" md="4">
+          <v-col v-if="currentTab === 1 && snack.name" cols="12" md="4">
             <snack-card :snack="snack" />
           </v-col>
         </template>
       </template>
     </v-row>
+
+    <v-layout class="overflow-visible" style="height: 56px">
+      <v-bottom-navigation v-model="currentTab" color="primary" horizontal>
+        <v-btn>
+          <v-icon>mdi-bottle-wine</v-icon>
+
+          Напитки
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-food</v-icon>
+
+          Закуски
+        </v-btn>
+      </v-bottom-navigation>
+    </v-layout>
   </v-container>
 </template>
 
@@ -38,9 +57,13 @@ import DrinkCard from '@/components/DrinkCard/DrinkCard.vue'
 import SnackCard from '@/components/SnackCard/SnackCard.vue'
 
 const isLoading = ref(false)
+const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
+
+const titles = ['Напитки', 'Закуски']
+const title = computed(() => titles[currentTab.value])
 
 async function fetchData() {
   isLoading.value = true

@@ -6,6 +6,4 @@
   </nuxt-link>
 </template>
 
-<script setup lang="ts"></script>
-
 <style lang="scss" src="./CreateBubble.scss"></style>

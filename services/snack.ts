@@ -9,6 +9,14 @@ export function getSnacks(): Promise<SnackData[]> {
     .then((data) => data.data)
 }
 
+export function getSnack(id: number): Promise<SnackData> {
+  const runtimeConfig = useRuntimeConfig()
+
+  return axios
+    .get(`${runtimeConfig.public.apiBase}/snack/${id}`)
+    .then((data) => data.data)
+}
+
 export function createSnack(data: SnackCreateData): Promise<SnackData[]> {
   const runtimeConfig = useRuntimeConfig()
 

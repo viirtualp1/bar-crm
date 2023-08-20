@@ -1,13 +1,29 @@
 <template>
-  <v-container>
-    <v-alert type="info" v-if="isLoading">Loading...</v-alert>
+  <v-container class="mt-3">
     <v-row>
-      <v-col v-for="drink in drinks" :key="drink.id">
-        <drink-card :drink="drink" />
-      </v-col>
-      <v-col v-for="snack in snacks" :key="snack.id">
-        <snack-card :snack="snack" />
-      </v-col>
+      <template v-if="isLoading">
+        <v-col v-for="i in 3" :key="i" cols="12" md="4">
+          <v-skeleton-loader
+            class="mb-8"
+            type="card"
+            width="100%"
+            height="150px"
+          />
+        </v-col>
+      </template>
+
+      <template v-else>
+        <template v-for="drink in drinks" :key="drink.id">
+          <v-col v-if="drink.name" cols="12" md="4">
+            <drink-card v-if="drink.name" :drink="drink" />
+          </v-col>
+        </template>
+        <template v-for="snack in snacks" :key="snack.id">
+          <v-col v-if="snack.name" cols="12" md="4">
+            <snack-card :snack="snack" />
+          </v-col>
+        </template>
+      </template>
     </v-row>
   </v-container>
 </template>

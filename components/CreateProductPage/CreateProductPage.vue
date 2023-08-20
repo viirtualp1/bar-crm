@@ -6,164 +6,62 @@
       </nuxt-link>
     </v-btn>
 
-    <v-form :readonly="isLoading">
-      <v-row class="create-product-page__row">
-        <h1 class="create-product-page__title">Добавить продукт</h1>
+    <v-row class="create-product-page__row">
+      <h1 class="create-product-page__title">Добавить продукт</h1>
 
-        <v-col cols="12">
-          <v-select
-            v-model="type"
-            variant="outlined"
-            label="Тип продукта"
-            hide-details="auto"
-            :items="types"
-            item-title="name"
-            item-value="value"
-            closable-chips
-          />
-        </v-col>
+      <v-col cols="12">
+        <v-select
+          v-model="type"
+          variant="outlined"
+          label="Тип продукта"
+          hide-details="auto"
+          :items="types"
+          item-title="name"
+          item-value="value"
+          closable-chips
+        />
+      </v-col>
 
-        <template v-if="type === ProductEnum.DRINK">
-          <v-col cols="12">
-            <v-text-field
-              v-model="formDrink.name"
-              label="Название"
-              variant="outlined"
-              hide-details="auto"
-            />
-          </v-col>
+      <drink-form
+        v-if="type === ProductEnum.DRINK"
+        :form="formDrink"
+        :is-readonly="isLoading"
+      />
 
-          <v-col cols="12">
-            <v-text-field
-              v-model="formDrink.description"
-              label="Описание"
-              variant="outlined"
-              hide-details="auto"
-            />
-          </v-col>
+      <snack-form
+        v-if="type === ProductEnum.SNACK"
+        :form="formSnack"
+        :is-readonly="isLoading"
+      />
 
-          <v-col cols="12">
-            <v-text-field
-              v-model.number="formDrink.price"
-              label="Цена"
-              variant="outlined"
-              prefix="₽"
-              hide-details
-              type="number"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-select
-              v-model="formDrink.location"
-              variant="outlined"
-              label="Доступно в "
-              hide-details="auto"
-              :items="shops"
-              item-title="name"
-              item-value="value"
-              chips
-              multiple
-              closable-chips
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-slider
-              label="Плотность"
-              :ticks="density"
-              v-model="formDrink.density"
-              min="5"
-              max="20"
-              :step="5"
-              show-ticks="always"
-              tick-size="3"
-            />
-          </v-col>
-
-          <!--          <v-col cols="12">-->
-          <!--            <v-file-input-->
-          <!--              v-model="formDrink.image"-->
-          <!--              label="Изображение"-->
-          <!--              variant="outlined"-->
-          <!--              hide-details="auto"-->
-          <!--              prepend-icon="mdi-camera"-->
-          <!--            />-->
-          <!--          </v-col>-->
-        </template>
-        <template v-if="type === ProductEnum.SNACK">
-          <v-col cols="12">
-            <v-text-field
-              v-model="formSnack.name"
-              label="Название"
-              variant="outlined"
-              hide-details="auto"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-text-field
-              v-model="formSnack.description"
-              label="Описание"
-              variant="outlined"
-              hide-details="auto"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-text-field
-              v-model.number="formSnack.price"
-              label="Цена"
-              variant="outlined"
-              prefix="₽"
-              hide-details
-              type="number"
-            />
-          </v-col>
-
-          <v-col cols="12">
-            <v-select
-              v-model="formSnack.location"
-              variant="outlined"
-              label="Доступно в "
-              hide-details="auto"
-              :items="shops"
-              item-title="name"
-              item-value="value"
-              chips
-              multiple
-              closable-chips
-            />
-          </v-col>
-
-          <!--          <v-col cols="12">-->
-          <!--            <v-file-input-->
-          <!--              v-model="formSnack.image"-->
-          <!--              label="Изображение"-->
-          <!--              variant="outlined"-->
-          <!--              hide-details="auto"-->
-          <!--              prepend-icon="mdi-camera"-->
-          <!--            />-->
-          <!--          </v-col>-->
-        </template>
-
-        <v-col cols="12">
-          <v-btn color="success" @click="addProduct">Добавить</v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
+      <v-col cols="12">
+        <v-btn color="success" :loading="isLoading" @click="addProduct">
+          Добавить
+        </v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script setup lang="ts">
+import { AxiosError } from 'axios'
+import { useRouter } from '#app'
+
 import {
   DrinkCreateData,
   ProductEnum,
   ProductType,
   SnackCreateData,
 } from '@/types/product'
+
 import { createDrink } from '@/services/drink'
 import { createSnack } from '@/services/snack'
+import { toast } from '@/services/toast'
+
+import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
+import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
+
+const router = useRouter()
 
 const isLoading = ref(false)
 
@@ -187,14 +85,6 @@ const formSnack = reactive<SnackCreateData>({
   description: '',
 })
 
-const density = computed(() => [5, 10, 15, 20])
-
-const shops = computed(() => [
-  { value: 1, name: 'Первом магазине' },
-  { value: 2, name: 'Втором магазине' },
-  { value: 3, name: 'Третьем магазине' },
-])
-
 const type = ref<ProductType>(ProductEnum.DRINK)
 
 const types = computed(() => [
@@ -206,13 +96,30 @@ async function addProduct() {
   isLoading.value = true
 
   try {
-    type.value === ProductEnum.DRINK
-      ? await createDrink(formDrink)
-      : await createSnack(formSnack)
+    const data =
+      type.value === ProductEnum.DRINK
+        ? await createDrink(formDrink)
+        : await createSnack(formSnack)
 
-    alert('Успешно!')
+    console.log(data)
+
+    const result = await toast({
+      title: 'Успешно',
+      icon: 'success',
+      confirmButtonText: 'Перейти к продукту',
+    })
+
+    if (result.isConfirmed) {
+      router.push(`${type.value}/4`)
+    }
   } catch (err) {
     console.error(err)
+
+    toast({
+      title: 'Ошибка при создании',
+      text: (err as AxiosError).message,
+      icon: 'error',
+    })
   } finally {
     isLoading.value = false
   }

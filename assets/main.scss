@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Andika&display=swap');
+
+html {
+  font-family: 'Andika', sans-serif !important;
+}
+
 html,
 body,
 #__nuxt,
@@ -8,6 +14,7 @@ body,
 
 a {
   text-decoration: none;
+  color: #000;
 }
 
 .v-input--center-affix .v-input__prepend {

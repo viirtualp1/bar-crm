@@ -1,5 +1,5 @@
 <template>
-  <div v-if="drink">
+  <div v-if="snack">
     <div class="product-page__header">
       <h2>{{ snack.name }}</h2>
 

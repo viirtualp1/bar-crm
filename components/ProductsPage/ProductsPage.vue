@@ -1,7 +1,5 @@
 <template>
-  <v-container class="mt-3">
-    <h2 class="ml-3 mb-3">{{ title }}</h2>
-
+  <v-container class="content">
     <v-row>
       <template v-if="isLoading">
         <v-col v-for="i in 3" :key="i" cols="12" md="4">
@@ -17,7 +15,7 @@
       <template v-else>
         <template v-for="drink in drinks" :key="drink.id">
           <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
-            <drink-card v-if="drink.name" :drink="drink" />
+            <drink-card :drink="drink" />
           </v-col>
         </template>
 
@@ -26,6 +24,8 @@
             <snack-card :snack="snack" />
           </v-col>
         </template>
+
+        <create-product-page v-if="currentTab === 2" />
       </template>
     </v-row>
 
@@ -42,6 +42,11 @@
 
           Закуски
         </v-btn>
+        <v-btn>
+          <v-icon>mdi-plus</v-icon>
+
+          Создать
+        </v-btn>
       </v-bottom-navigation>
     </v-layout>
   </v-container>
@@ -55,15 +60,13 @@ import { DrinkData, SnackData } from '@/types/product'
 
 import DrinkCard from '@/components/DrinkCard/DrinkCard.vue'
 import SnackCard from '@/components/SnackCard/SnackCard.vue'
+import CreateProductPage from '@/components/CreateProductPage/CreateProductPage.vue'
 
 const isLoading = ref(false)
 const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
-
-const titles = ['Напитки', 'Закуски']
-const title = computed(() => titles[currentTab.value])
 
 async function fetchData() {
   isLoading.value = true

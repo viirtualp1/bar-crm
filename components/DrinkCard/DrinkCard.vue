@@ -1,65 +1,82 @@
 <template>
-  <nuxt-link :to="`drink/${drink.id}`">
-    <v-card class="mx-auto" max-width="374">
-      <template v-slot:loader="{ isActive }">
-        <v-progress-linear
-          :active="isActive"
-          color="deep-purple"
-          height="4"
-          indeterminate
-        ></v-progress-linear>
-      </template>
+  <v-card class="drink-card mx-auto" @click="openDrinkModal">
+    <template v-slot:loader="{ isActive }">
+      <v-progress-linear
+        :active="isActive"
+        color="deep-purple"
+        height="4"
+        indeterminate
+      ></v-progress-linear>
+    </template>
 
-      <v-img v-if="drink.image" :cover="true" height="250" :src="drink.image" />
+    <v-img v-if="drink.image" cover height="250" :src="drink.image" />
 
-      <template #title>
-        <v-card-title>
-          {{ drink.name }}
+    <template #title>
+      <v-card-title class="drink-card__title">
+        {{ drink.name }}
 
-          <v-icon
-            v-if="drink.strength > 1"
-            color="error"
-            icon="mdi-fire-circle"
-            size="small"
-          />
-        </v-card-title>
-      </template>
-      <template #append>
-        <v-btn icon size="small">
-          <nuxt-link :to="`/edit/${drink.id}`">
-            <v-icon>mdi-pen</v-icon>
-          </nuxt-link>
-        </v-btn>
-      </template>
-
-      <v-card-text>
-        <div class="text-subtitle-1 font-weight-bold">{{ drink.price }} ₽</div>
-
-        <v-chip
-          v-for="location in drink.location"
-          class="mt-2 mr-2"
+        <v-icon
+          v-if="drink.strength > 1"
+          color="error"
+          icon="mdi-fire-circle"
           size="small"
-          variant="outlined"
-          color="success"
-        >
-          {{ getLocation(location) }}
-        </v-chip>
-      </v-card-text>
-    </v-card>
-  </nuxt-link>
+        />
+      </v-card-title>
+    </template>
+
+    <v-card-text>
+      <div class="text-subtitle-1 mt-3">
+        {{ drink.description }}
+      </div>
+
+      <div class="text-subtitle-2 font-weight-bold">{{ drink.price }} ₽</div>
+
+      <div class="mt-2">
+        <v-chip color="error"> Крепкость {{ drink.strength }} </v-chip>
+        <v-chip color="success"> Плотность {{ drink.density }} </v-chip>
+      </div>
+
+      <v-chip
+        v-for="location in drink.location"
+        class="drink-card__location"
+        color="info"
+        text-color="white"
+      >
+        <v-icon start icon="mdi-glass-mug-variant"></v-icon>
+        {{ getLocation(location) }}
+      </v-chip>
+    </v-card-text>
+
+    <drink-modal
+      v-model="isDrinkModalOpen"
+      :drink="drink"
+      @close="closeDrinkModal"
+    />
+  </v-card>
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { DrinkData } from '@/types/product'
+import { useRouter } from '#app'
+import { DrinkData } from '~/types/product'
 import { locations } from '~/services/drink'
+import DrinkModal from '~/components/modals/DrinkModal/DrinkModal.vue'
+import useDrinkModal from '~/components/modals/DrinkModal/useDrinkModal'
 
-defineProps({
+const props = defineProps({
   drink: {
     type: Object as PropType<DrinkData>,
     default: null,
   },
 })
+
+const router = useRouter()
+
+const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
+
+function openEditPage() {
+  return router.push(`/edit/${props.drink.id}`)
+}
 
 const getLocation = (location: number) =>
   locations[location as keyof typeof locations]

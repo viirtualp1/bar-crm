@@ -1,9 +1,8 @@
 .create-product-page {
-  margin-top: 12px;
+  padding-top: 0;
 
   &__title {
     font-size: 22px;
-    margin-top: 20px;
     margin-left: 12px;
   }
 
@@ -14,5 +13,9 @@
 
   &__back {
     margin-left: 12px;
+  }
+
+  &.v-container {
+    max-width: 500px !important;
   }
 }

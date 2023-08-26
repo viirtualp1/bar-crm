@@ -1,45 +1,37 @@
 <template>
   <v-container class="create-product-page">
-    <v-btn icon size="small" class="create-product-page__back">
-      <nuxt-link to="/">
-        <v-icon>mdi-arrow-left</v-icon>
-      </nuxt-link>
-    </v-btn>
+    <h1 class="create-product-page__title">Добавить продукт</h1>
 
-    <v-row class="create-product-page__row">
-      <h1 class="create-product-page__title">Добавить продукт</h1>
-
-      <v-col cols="12">
-        <v-select
-          v-model="type"
-          variant="outlined"
-          label="Тип продукта"
-          hide-details="auto"
-          :items="types"
-          item-title="name"
-          item-value="value"
-          closable-chips
-        />
-      </v-col>
-
-      <drink-form
-        v-if="type === ProductEnum.DRINK"
-        :form="formDrink"
-        :is-readonly="isLoading"
+    <v-col cols="12">
+      <v-select
+        v-model="type"
+        variant="outlined"
+        label="Тип продукта"
+        hide-details="auto"
+        :items="types"
+        item-title="name"
+        item-value="value"
+        closable-chips
       />
+    </v-col>
 
-      <snack-form
-        v-if="type === ProductEnum.SNACK"
-        :form="formSnack"
-        :is-readonly="isLoading"
-      />
+    <drink-form
+      v-if="type === ProductEnum.DRINK"
+      :form="formDrink"
+      :is-readonly="isLoading"
+    />
 
-      <v-col cols="12">
-        <v-btn color="success" :loading="isLoading" @click="addProduct">
-          Добавить
-        </v-btn>
-      </v-col>
-    </v-row>
+    <snack-form
+      v-if="type === ProductEnum.SNACK"
+      :form="formSnack"
+      :is-readonly="isLoading"
+    />
+
+    <v-col cols="12">
+      <v-btn color="success" :loading="isLoading" @click="addProduct">
+        Добавить
+      </v-btn>
+    </v-col>
   </v-container>
 </template>
 

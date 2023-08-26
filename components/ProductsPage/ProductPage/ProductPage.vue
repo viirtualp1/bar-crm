@@ -1,5 +1,5 @@
 <template>
-  <v-container class="product-page">
+  <v-container class="product-page content">
     <v-btn icon size="small" class="product-page__back">
       <nuxt-link to="/">
         <v-icon>mdi-arrow-left</v-icon>

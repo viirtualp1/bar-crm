@@ -3,7 +3,7 @@
     <div class="drink-preview__header">
       <h2>{{ drink.name }}</h2>
 
-      <v-chip color="success" class="drink-preview__price">
+      <v-chip color="success" class="drink-preview__price" size="2">
         {{ drink.price }} ₽
       </v-chip>
     </div>
@@ -13,6 +13,16 @@
     <div v-if="drink.image">
       <v-img :src="drink.image" cover />
     </div>
+
+    <v-chip
+      class="ml-0 mt-4 font-weight-bold"
+      color="info"
+      size="2"
+      v-for="(shop, idx) in drink.location"
+      :key="idx"
+    >
+      Бар {{ shop }}
+    </v-chip>
   </div>
 </template>
 

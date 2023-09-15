@@ -1,41 +1,21 @@
 import { SnackCreateData, SnackData } from '@/types/product'
 import axios from 'axios'
+import { addDoc, collection, getDocs, query } from 'firebase/firestore'
 
-export function getSnacks(): Promise<SnackData[]> {
-  const runtimeConfig = useRuntimeConfig()
+export function getSnacks() {
+  const { $db: db } = useNuxtApp()
 
-  return axios
-    .get(`${runtimeConfig.public.apiBase}/snack`)
-    .then((data) => data.data)
+  return getDocs(query(collection(db, 'snacks')))
 }
 
-export function getSnack(id: number): Promise<SnackData> {
-  const runtimeConfig = useRuntimeConfig()
+export function getSnack(id: number) {}
 
-  return axios
-    .get(`${runtimeConfig.public.apiBase}/snack/${id}`)
-    .then((data) => data.data)
+export function createSnack(data: SnackCreateData) {
+  const { $db } = useNuxtApp()
+
+  return addDoc(collection($db, 'snacks'), data)
 }
 
-export function createSnack(data: SnackCreateData): Promise<SnackData[]> {
-  const runtimeConfig = useRuntimeConfig()
+export function updateSnack(data: SnackData) {}
 
-  return axios.post(`${runtimeConfig.public.apiBase}/snack/create`, data)
-}
-
-export function updateSnack(data: SnackData): Promise<SnackData[]> {
-  const runtimeConfig = useRuntimeConfig()
-
-  return axios.post(`${runtimeConfig.public.apiBase}/snack/update`, {
-    id: data.id,
-    data,
-  })
-}
-
-export function deleteSnack(id: number): Promise<SnackData[]> {
-  const runtimeConfig = useRuntimeConfig()
-
-  return axios.post(`${runtimeConfig.public.apiBase}/snack/delete`, {
-    id,
-  })
-}
+export function deleteSnack(id: number) {}

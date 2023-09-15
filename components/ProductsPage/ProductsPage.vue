@@ -72,13 +72,30 @@ async function fetchData() {
   isLoading.value = true
 
   try {
+    // @ts-ignore
     drinks.value = await getDrinks()
+    formatDrinks()
+
+    // @ts-ignore
     snacks.value = await getSnacks()
+    formatSnacks()
   } catch (err) {
     console.error(err)
   } finally {
     isLoading.value = false
   }
+}
+
+function formatDrinks() {
+  drinks.value = (drinks.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
+}
+
+function formatSnacks() {
+  snacks.value = (snacks.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
 }
 
 onMounted(async () => await fetchData())

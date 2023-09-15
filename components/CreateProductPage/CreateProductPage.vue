@@ -84,22 +84,15 @@ async function addProduct() {
   isLoading.value = true
 
   try {
-    const data =
-      type.value === ProductEnum.DRINK
-        ? await createDrink(formDrink)
-        : await createSnack(formSnack)
+    type.value === ProductEnum.DRINK
+      ? await createDrink(formDrink)
+      : await createSnack(formSnack)
 
-    console.log(data)
-
-    const result = await toast({
+    toast({
       title: 'Успешно',
       icon: 'success',
       confirmButtonText: 'Перейти к продукту',
     })
-
-    if (result.isConfirmed) {
-      router.push(`${type.value}/4`)
-    }
   } catch (err) {
     console.error(err)
 

@@ -2,7 +2,7 @@
   <div class="photo-uploader">
     <div class="photo-uploader__input">
       <v-text-field
-        v-model="photo"
+        v-model="image"
         label="Вставьте ссылку на изображение"
         variant="outlined"
         hide-details="auto"
@@ -13,7 +13,7 @@
     <div class="photo-uploader__added">
       <v-chip
         class="photo-uploader__photo"
-        v-for="(photo, idx) in currentPhotos"
+        v-for="(photo, idx) in currentImages"
         :key="idx"
       >
         {{ truncatedPhoto(photo) }}
@@ -34,27 +34,27 @@
 
 <script setup lang="ts">
 defineProps({
-  photos: {
+  images: {
     type: Array as PropType<string[]>,
     default: () => [],
   },
 })
 
 const emit = defineEmits({
-  'update:photos': (_photos: string[]) => true,
+  'update:images': (_images: string[]) => true,
 })
 
-const currentPhotos = ref<string[]>([])
-const photo = ref('')
+const currentImages = ref<string[]>([])
+const image = ref('')
 
 function add() {
-  currentPhotos.value.push(photo.value)
+  currentImages.value.push(image.value)
 
-  emit('update:photos', currentPhotos.value)
+  emit('update:images', currentImages.value)
 }
 
 function remove(idx: number) {
-  currentPhotos.value.splice(idx, 1)
+  currentImages.value.splice(idx, 1)
 }
 
 function truncatedPhoto(name: string) {

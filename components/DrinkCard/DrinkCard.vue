@@ -81,10 +81,6 @@ const router = useRouter()
 
 const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
 
-function openEditPage() {
-  return router.push(`/edit/${props.drink.id}`)
-}
-
 const getLocation = (location: number) =>
   locations[location as keyof typeof locations]
 </script>

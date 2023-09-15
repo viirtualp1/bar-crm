@@ -45,7 +45,7 @@
     </v-col>
 
     <v-col cols="12">
-      <photo-uploader v-model:photos="currentForm.images" />
+      <photo-uploader v-model:images="currentForm.images" />
     </v-col>
 
     <v-btn class="snack-form__submit" type="submit">Создать</v-btn>

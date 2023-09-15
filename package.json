@@ -17,6 +17,7 @@
     "@mdi/font": "^7.2.96",
     "axios": "^1.4.0",
     "eslint": "^8.47.0",
+    "firebase": "^10.4.0",
     "prettier": "^3.0.2",
     "sass": "^1.66.1",
     "sweetalert2": "^11.7.26",

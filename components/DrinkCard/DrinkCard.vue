@@ -9,14 +9,19 @@
       ></v-progress-linear>
     </template>
 
-    <v-img v-if="drink.image" cover height="250" :src="drink.image" />
+    <v-img
+      v-if="drink.images.length > 0"
+      :src="drink.images[0]"
+      height="250"
+      cover
+    />
 
     <template #title>
       <v-card-title class="drink-card__title">
         {{ drink.name }}
 
         <v-icon
-          v-if="drink.strength > 1"
+          v-if="drink.discount"
           color="error"
           icon="mdi-fire-circle"
           size="small"
@@ -32,17 +37,19 @@
       <div class="text-subtitle-2 font-weight-bold">{{ drink.price }} ₽</div>
 
       <div class="mt-2">
-        <v-chip color="error"> Крепкость {{ drink.strength }} </v-chip>
+        <v-chip class="mr-2" color="error">
+          Крепкость {{ drink.strength }}
+        </v-chip>
         <v-chip color="success"> Плотность {{ drink.density }} </v-chip>
       </div>
 
       <v-chip
         v-for="location in drink.location"
-        class="drink-card__location"
+        class="drink-card__location mr-2"
         color="info"
         text-color="white"
       >
-        <v-icon start icon="mdi-glass-mug-variant"></v-icon>
+        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
         {{ getLocation(location) }}
       </v-chip>
     </v-card-text>
@@ -60,8 +67,8 @@ import { PropType } from 'vue'
 import { useRouter } from '#app'
 import { DrinkData } from '~/types/product'
 import { locations } from '~/services/drink'
-import DrinkModal from '~/components/modals/DrinkModal/DrinkModal.vue'
-import useDrinkModal from '~/components/modals/DrinkModal/useDrinkModal'
+import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
+import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
 
 const props = defineProps({
   drink: {

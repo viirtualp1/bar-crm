@@ -1,12 +1,17 @@
 export default function useSnackModal() {
-  const isSnackOpenModal = ref(false)
+  const isSnackModalOpen = ref(false)
 
   function openSnackModal() {
-    isSnackOpenModal.value = true
+    isSnackModalOpen.value = true
+  }
+
+  function closeSnackModal() {
+    isSnackModalOpen.value = false
   }
 
   return {
-    isSnackOpenModal,
+    isSnackModalOpen,
     openSnackModal,
+    closeSnackModal,
   }
 }

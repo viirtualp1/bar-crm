@@ -30,6 +30,8 @@
               Бар {{ shop }}
             </v-chip>
           </div>
+
+          <images-slider :photos="drink.images" />
         </div>
       </v-card-text>
     </v-card>
@@ -38,7 +40,8 @@
 
 <script setup lang="ts">
 import { PropType } from 'vue'
-import { DrinkData } from '~/types/product'
+import { DrinkData } from '@/types/product'
+import ImagesSlider from '@/components/ImagesSlider/ImagesSlider.vue'
 
 const props = defineProps({
   value: {
@@ -54,6 +57,8 @@ const props = defineProps({
 const emit = defineEmits({
   close: () => undefined,
 })
+
+const swiperRef = ref()
 
 const currentValue = ref(false)
 

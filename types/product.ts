@@ -8,7 +8,7 @@ export enum ProductEnum {
 export interface DrinkData {
   id: number
   name: string
-  image?: string
+  images: string[]
   price: number
   location: number[]
   discount?: number
@@ -20,7 +20,7 @@ export interface DrinkData {
 export interface SnackData {
   id: number
   name: string
-  image?: string
+  images: string[]
   description: string
   price: number
   location: number[]

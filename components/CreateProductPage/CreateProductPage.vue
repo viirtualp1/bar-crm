@@ -19,19 +19,15 @@
       v-if="type === ProductEnum.DRINK"
       :form="formDrink"
       :is-readonly="isLoading"
+      @submit="addProduct"
     />
 
     <snack-form
       v-if="type === ProductEnum.SNACK"
       :form="formSnack"
       :is-readonly="isLoading"
+      @submit="addProduct"
     />
-
-    <v-col cols="12">
-      <v-btn color="success" :loading="isLoading" @click="addProduct">
-        Добавить
-      </v-btn>
-    </v-col>
   </v-container>
 </template>
 
@@ -59,7 +55,7 @@ const isLoading = ref(false)
 
 const formDrink = reactive<DrinkCreateData>({
   name: '',
-  image: '',
+  images: [],
   price: 0,
   location: [],
   discount: 0,
@@ -70,7 +66,7 @@ const formDrink = reactive<DrinkCreateData>({
 
 const formSnack = reactive<SnackCreateData>({
   name: '',
-  image: '',
+  images: [],
   price: 0,
   location: [],
   discount: 0,

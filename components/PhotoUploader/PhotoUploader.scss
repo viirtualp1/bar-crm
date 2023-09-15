@@ -1,0 +1,20 @@
+.photo-uploader {
+  &__input {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__photo {
+    display: flex !important;
+    align-items: center;
+    width: fit-content;
+    margin: 8px 0;
+  }
+
+  &__photo-delete {
+    background: none;
+    box-shadow: none;
+    margin-left: 6px;
+  }
+}

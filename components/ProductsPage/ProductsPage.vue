@@ -100,5 +100,3 @@ function formatSnacks() {
 
 onMounted(async () => await fetchData())
 </script>
-
-<style lang="scss" src="./ProductsPage.scss"></style>

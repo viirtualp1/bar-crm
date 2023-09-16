@@ -10,8 +10,8 @@
 
     <div class="drink-preview__description">{{ drink.description }}</div>
 
-    <div v-if="drink.image">
-      <v-img :src="drink.image" cover />
+    <div v-if="drink.images.length > 0">
+      <v-img :src="drink.images[0]" cover />
     </div>
 
     <v-chip
@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import { DrinkData } from '@/types/product'
 
 defineProps({

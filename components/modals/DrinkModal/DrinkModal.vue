@@ -6,34 +6,40 @@
       </product-title>
 
       <v-card-text>
+        <div class="drink-modal__discount" v-if="drink.discount">
+          <div class="drink-modal__discount-with drink-card__price">
+            {{ priceWithDiscount }}
+          </div>
+
+          <div class="drink-modal__discount-without">{{ drink.price }} ₽</div>
+        </div>
+
+        <div v-else class="drink-modal__price">{{ drink.price }} ₽</div>
+
         <div class="mb-4">{{ drink.description }}</div>
 
-        <div class="drink-modal__tags">
-          <v-chip color="error" class="mb-3">
+        <div class="drink-modal__chips mt-2">
+          <v-chip class="drink-card__chip mr-2" color="error">
             Крепкость {{ drink.strength }}
           </v-chip>
-          <v-chip color="success" class="mb-2">
+          <v-chip class="drink-card__chip" color="success">
             Плотность {{ drink.density }}
           </v-chip>
-
-          <bar-locations :locations="drink.location" />
         </div>
+
+        <bar-locations :locations="drink.location" />
 
         <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
       </v-card-text>
 
-      <product-actions @delete:product="deleteDrink" />
+      <product-actions @delete:product="onDeleteDrink" />
     </v-card>
   </product-modal>
 </template>
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import ImagesSlider from '@/components/ImagesSlider/ImagesSlider.vue'
-import ProductTitle from '@/components/ProductTitle/ProductTitle.vue'
-import ProductModal from '@/components/ProductModal/ProductModal.vue'
-import BarLocations from '@/components/BarLocations/BarLocations.vue'
-import ProductActions from '~/components/ProductActions/ProductActions.vue'
+import { deleteDrink } from '@/services/drink'
 
 const props = defineProps({
   value: {
@@ -52,12 +58,26 @@ const emit = defineEmits({
 
 const currentValue = ref(false)
 
+const nuxt = useNuxtApp()
+
 watch(
   () => props.value,
   () => (currentValue.value = props.value),
 )
 
-function deleteDrink() {}
+const priceWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return props.drink.price - props.drink.price * (props.drink.discount / 100)
+})
+
+async function onDeleteDrink() {
+  await deleteDrink(props.drink.id)
+
+  location.reload()
+}
 
 function close() {
   emit('close')

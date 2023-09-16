@@ -1,18 +1,9 @@
 <template>
   <nav class="nav-bar">
     <nuxt-link to="/">
-      Бар CRM <template v-if="subtitle">- {{ subtitle }}</template>
+      <img src="@/assets/images/logo.png" alt="logo" width="104" height="48" />
     </nuxt-link>
   </nav>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  subtitle: {
-    type: String,
-    default: null,
-  },
-})
-</script>
 
 <style lang="scss" src="./NavBar.scss"></style>

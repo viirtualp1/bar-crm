@@ -2,18 +2,17 @@
   <v-container class="create-product-page">
     <h1 class="create-product-page__title">Добавить продукт</h1>
 
-    <v-col cols="12">
-      <v-select
-        v-model="type"
-        variant="outlined"
-        label="Тип продукта"
-        hide-details="auto"
-        :items="types"
-        item-title="name"
-        item-value="value"
-        closable-chips
-      />
-    </v-col>
+    <v-select
+      class="create-product-page__type"
+      v-model="type"
+      variant="outlined"
+      label="Тип продукта"
+      hide-details="auto"
+      :items="types"
+      item-title="name"
+      item-value="value"
+      closable-chips
+    />
 
     <drink-form
       v-if="type === ProductEnum.DRINK"
@@ -32,28 +31,21 @@
 </template>
 
 <script setup lang="ts">
-import { AxiosError } from 'axios'
-import { useRouter } from '#app'
+import { uuidv4 } from '@firebase/util'
 
-import {
-  DrinkCreateData,
-  ProductEnum,
-  ProductType,
-  SnackCreateData,
-} from '@/types/product'
+import { DrinkData, ProductEnum, ProductType, SnackData } from '@/types/product'
 
 import { createDrink } from '@/services/drink'
 import { createSnack } from '@/services/snack'
 import { toast } from '@/services/toast'
 
-import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
 import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
-
-const router = useRouter()
+import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
 
 const isLoading = ref(false)
 
-const formDrink = reactive<DrinkCreateData>({
+const formDrink = reactive<DrinkData>({
+  id: uuidv4(),
   name: '',
   images: [],
   price: 0,
@@ -62,15 +54,21 @@ const formDrink = reactive<DrinkCreateData>({
   description: '',
   density: 0,
   strength: 0,
+  isFiltered: false,
+  types: [],
+  inStock: true,
 })
 
-const formSnack = reactive<SnackCreateData>({
+const formSnack = reactive<SnackData>({
+  id: uuidv4(),
   name: '',
   images: [],
   price: 0,
   location: [],
   discount: 0,
   description: '',
+  types: [],
+  inStock: true,
 })
 
 const type = ref<ProductType>(ProductEnum.DRINK)
@@ -88,19 +86,14 @@ async function addProduct() {
       ? await createDrink(formDrink)
       : await createSnack(formSnack)
 
+    location.reload()
+
     toast({
       title: 'Успешно',
       icon: 'success',
-      confirmButtonText: 'Перейти к продукту',
     })
   } catch (err) {
     console.error(err)
-
-    toast({
-      title: 'Ошибка при создании',
-      text: (err as AxiosError).message,
-      icon: 'error',
-    })
   } finally {
     isLoading.value = false
   }

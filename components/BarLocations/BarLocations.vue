@@ -1,6 +1,7 @@
 <template>
   <div class="bar-locations">
     <v-chip
+      class="bar-locations__location"
       tag="div"
       color="info"
       v-for="(location, idx) in locations"
@@ -19,3 +20,5 @@ defineProps({
   },
 })
 </script>
+
+<style lang="scss" src="./BarLocations.scss"></style>

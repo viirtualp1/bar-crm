@@ -1,6 +1,12 @@
-import { SnackCreateData, SnackData } from '@/types/product'
-import axios from 'axios'
-import { addDoc, collection, getDocs, query } from 'firebase/firestore'
+import { SnackData } from '@/types/product'
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore'
 
 export function getSnacks() {
   const { $db: db } = useNuxtApp()
@@ -10,12 +16,16 @@ export function getSnacks() {
 
 export function getSnack(id: number) {}
 
-export function createSnack(data: SnackCreateData) {
-  const { $db } = useNuxtApp()
+export function createSnack(data: SnackData) {
+  const { $db: db } = useNuxtApp()
 
-  return addDoc(collection($db, 'snacks'), data)
+  return addDoc(collection(db, 'snacks'), data)
 }
 
 export function updateSnack(data: SnackData) {}
 
-export function deleteSnack(id: number) {}
+export function deleteSnack(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'snack', id))
+}

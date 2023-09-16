@@ -3,7 +3,6 @@
 
   &__title {
     font-size: 22px;
-    margin-left: 12px;
   }
 
   &__row {
@@ -13,6 +12,10 @@
 
   &__back {
     margin-left: 12px;
+  }
+
+  &__type {
+    margin: 22px 0;
   }
 
   &.v-container {

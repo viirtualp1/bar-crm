@@ -58,10 +58,6 @@ import { getSnacks } from '@/services/snack'
 
 import { DrinkData, SnackData } from '@/types/product'
 
-import DrinkCard from '@/components/DrinkCard/DrinkCard.vue'
-import SnackCard from '@/components/SnackCard/SnackCard.vue'
-import CreateProductPage from '@/components/CreateProductPage/CreateProductPage.vue'
-
 const isLoading = ref(false)
 const currentTab = ref(0)
 

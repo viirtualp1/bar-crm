@@ -30,17 +30,27 @@
     </template>
 
     <v-card-text>
-      <div class="text-subtitle-1 mt-3">
+      <div class="drink-card__discount" v-if="drink.discount">
+        <div class="drink-card__discount-with drink-card__price">
+          {{ priceWithDiscount }}
+        </div>
+
+        <div class="drink-card__discount-without">{{ drink.price }} ₽</div>
+      </div>
+
+      <div v-else class="drink-card__price">{{ drink.price }} ₽</div>
+
+      <div class="text-subtitle-1">
         {{ drink.description }}
       </div>
 
-      <div class="text-subtitle-2 font-weight-bold">{{ drink.price }} ₽</div>
-
-      <div class="mt-2">
-        <v-chip class="mr-2" color="error">
+      <div class="drink-card__chips mt-2">
+        <v-chip class="drink-card__chip mr-2" color="error">
           Крепкость {{ drink.strength }}
         </v-chip>
-        <v-chip color="success"> Плотность {{ drink.density }} </v-chip>
+        <v-chip class="drink-card__chip" color="success">
+          Плотность {{ drink.density }}
+        </v-chip>
       </div>
 
       <v-chip
@@ -63,12 +73,11 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-import { useRouter } from '#app'
-import { DrinkData } from '~/types/product'
-import { locations } from '~/services/drink'
-import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
+import { DrinkData } from '@/types/product'
+import { locations } from '@/services/drink'
+
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
+import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
 
 const props = defineProps({
   drink: {
@@ -77,9 +86,15 @@ const props = defineProps({
   },
 })
 
-const router = useRouter()
-
 const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
+
+const priceWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return props.drink.price - props.drink.price * (props.drink.discount / 100)
+})
 
 const getLocation = (location: number) =>
   locations[location as keyof typeof locations]

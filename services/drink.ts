@@ -1,5 +1,12 @@
-import { addDoc, collection, query, getDocs } from 'firebase/firestore'
-import { DrinkCreateData, DrinkData } from '@/types/product'
+import {
+  collection,
+  query,
+  getDocs,
+  deleteDoc,
+  doc,
+  setDoc,
+} from 'firebase/firestore'
+import { DrinkData } from '@/types/product'
 
 export function getDrinks() {
   const { $db: db } = useNuxtApp()
@@ -7,17 +14,19 @@ export function getDrinks() {
   return getDocs(query(collection(db, 'drinks')))
 }
 
-export function getDrink(id: number): {}
-
-export function createDrink(data: DrinkCreateData) {
+export function createDrink(data: DrinkData) {
   const { $db: db } = useNuxtApp()
 
-  return addDoc(collection(db, 'drinks'), data)
+  return setDoc(doc(db, 'drinks', data.id), data)
 }
 
 export function updateDrink(data: DrinkData) {}
 
-export function deleteDrink(id: number) {}
+export function deleteDrink(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'drinks', id))
+}
 
 export const locations = {
   1: 'Бар 1',

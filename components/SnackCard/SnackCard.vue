@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { SnackData } from '@/types/product'
 import { locations } from '@/services/drink'
-import SnackModal from '@/components/modals/SnackModal/SnackModal.vue'
+
 import useSnackModal from '@/components/modals/SnackModal/useSnackModal'
 
 defineProps({

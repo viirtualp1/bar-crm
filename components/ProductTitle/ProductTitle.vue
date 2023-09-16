@@ -9,8 +9,6 @@
 </template>
 
 <script setup lang="ts">
-import CloseButton from '@/components/CloseButton/CloseButton.vue'
-
 const emit = defineEmits({
   close: () => true,
 })

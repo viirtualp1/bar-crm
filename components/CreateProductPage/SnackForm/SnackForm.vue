@@ -10,7 +10,7 @@
     </v-col>
 
     <v-col cols="12">
-      <v-text-field
+      <v-textarea
         v-model="currentForm.description"
         label="Описание"
         variant="outlined"
@@ -48,13 +48,14 @@
       <photo-uploader v-model:images="currentForm.images" />
     </v-col>
 
-    <v-btn class="snack-form__submit" type="submit">Создать</v-btn>
+    <v-col cols="12">
+      <v-btn color="success" type="submit" size="large"> Создать </v-btn>
+    </v-col>
   </v-form>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-import { SnackCreateData } from '@/types/product'
+import { SnackData } from '@/types/product'
 import { shops } from '@/services/shops'
 
 const props = defineProps({
@@ -63,16 +64,16 @@ const props = defineProps({
     default: false,
   },
   form: {
-    type: Object as PropType<SnackCreateData>,
+    type: Object as PropType<SnackData>,
     default: null,
   },
 })
 
 const emit = defineEmits({
-  submit: (_form: SnackCreateData) => true,
+  submit: (_form: SnackData) => true,
 })
 
-const currentForm = ref<SnackCreateData>(props.form)
+const currentForm = ref<SnackData>(props.form)
 
 function submit() {
   emit('submit', currentForm.value)

@@ -17,11 +17,41 @@
     justify-content: space-between;
   }
 
+  &__price {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  &__discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__discount-without {
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  &__discount-with {
+    margin-bottom: 0;
+  }
+
   &__edit-link {
     display: flex;
   }
 
+  &__chips {
+    display: flex;
+  }
+
+  &__chip {
+    width: fit-content;
+  }
+
   &__location {
+    width: fit-content;
     padding: 0 6px !important;
     margin-top: 12px !important;
   }

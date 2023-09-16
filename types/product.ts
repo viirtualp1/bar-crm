@@ -6,7 +6,7 @@ export enum ProductEnum {
 }
 
 export interface DrinkData {
-  id: number
+  id: string
   name: string
   images: string[]
   price: number
@@ -15,17 +15,19 @@ export interface DrinkData {
   description?: string
   density?: number
   strength?: number
+  isFiltered: boolean
+  types: string[]
+  inStock: boolean
 }
 
 export interface SnackData {
-  id: number
+  id: string
   name: string
   images: string[]
   description: string
   price: number
   location: number[]
   discount?: number
+  types: string[]
+  inStock: boolean
 }
-
-export type DrinkCreateData = Omit<DrinkData, 'id'>
-export type SnackCreateData = Omit<SnackData, 'id'>

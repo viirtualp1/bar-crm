@@ -7,26 +7,21 @@
         variant="outlined"
         hide-details="auto"
       />
-      <v-btn x-small @click="add">Добавить</v-btn>
+      <v-btn class="photo-uploader__add" x-small @click="add">Добавить</v-btn>
     </div>
 
     <div class="photo-uploader__added">
       <v-chip
+        closable
+        color="info"
+        label
         class="photo-uploader__photo"
         v-for="(photo, idx) in currentImages"
         :key="idx"
       >
-        {{ truncatedPhoto(photo) }}
+        <v-icon start icon="mdi-camera"></v-icon>
 
-        <button
-          type="button"
-          class="photo-uploader__photo-delete"
-          size="x-small"
-          icon
-          @click="remove(idx)"
-        >
-          <v-icon size="small">mdi-trash-can</v-icon>
-        </button>
+        {{ truncatedPhoto(photo) }}
       </v-chip>
     </div>
   </div>
@@ -48,6 +43,10 @@ const currentImages = ref<string[]>([])
 const image = ref('')
 
 function add() {
+  if (!image.value) {
+    return
+  }
+
   currentImages.value.push(image.value)
 
   emit('update:images', currentImages.value)
@@ -58,7 +57,7 @@ function remove(idx: number) {
 }
 
 function truncatedPhoto(name: string) {
-  return `${name.slice(0, 16)}...`
+  return name.length > 20 ? `${name.slice(0, 40)}...` : name
 }
 </script>
 

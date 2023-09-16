@@ -7,7 +7,7 @@
   >
     <v-carousel-item v-for="(photo, idx) in photos" :key="idx">
       <v-sheet height="100%">
-        <div class="d-flex fill-height justify-center align-center">
+        <div class="d-flex justify-center align-center">
           <v-img class="images-slider__image" :src="photo" />
         </div>
       </v-sheet>

@@ -1,18 +1,9 @@
 <template>
-  <v-dialog
-    class="drink-modal"
-    v-model="currentValue"
-    :fullscreen="$vuetify.display.smAndDown"
-  >
+  <product-modal v-model="currentValue">
     <v-card class="drink-modal__card">
-      <v-card-title class="drink-modal__header">
+      <product-title @close="close">
         {{ drink.name }}
-        <v-spacer />
-
-        <v-btn class="drink-modal__close" size="x-small" icon @click="close">
-          <v-icon size="x-small">mdi-close</v-icon>
-        </v-btn>
-      </v-card-title>
+      </product-title>
 
       <v-card-text>
         <div class="mb-4">{{ drink.description }}</div>
@@ -25,23 +16,24 @@
             Плотность {{ drink.density }}
           </v-chip>
 
-          <div>
-            <v-chip color="info" v-for="shop in drink.location">
-              Бар {{ shop }}
-            </v-chip>
-          </div>
-
-          <images-slider :photos="drink.images" />
+          <bar-locations :locations="drink.location" />
         </div>
+
+        <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
       </v-card-text>
+
+      <product-actions @delete:product="deleteDrink" />
     </v-card>
-  </v-dialog>
+  </product-modal>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import { DrinkData } from '@/types/product'
 import ImagesSlider from '@/components/ImagesSlider/ImagesSlider.vue'
+import ProductTitle from '@/components/ProductTitle/ProductTitle.vue'
+import ProductModal from '@/components/ProductModal/ProductModal.vue'
+import BarLocations from '@/components/BarLocations/BarLocations.vue'
+import ProductActions from '~/components/ProductActions/ProductActions.vue'
 
 const props = defineProps({
   value: {
@@ -58,14 +50,14 @@ const emit = defineEmits({
   close: () => undefined,
 })
 
-const swiperRef = ref()
-
 const currentValue = ref(false)
 
 watch(
   () => props.value,
   () => (currentValue.value = props.value),
 )
+
+function deleteDrink() {}
 
 function close() {
   emit('close')

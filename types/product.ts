@@ -9,7 +9,8 @@ export interface DrinkData {
   id: string
   name: string
   images: string[]
-  price: number
+  priceLittleSize: number
+  priceBigSize: number
   location: number[]
   discount?: number
   description?: string

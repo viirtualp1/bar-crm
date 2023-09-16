@@ -33,3 +33,7 @@ export const locations = {
   2: 'Бар 2',
   3: 'Бар 3',
 }
+
+export function getPriceWithDiscount(price: number, discount) {
+  return price - price * (discount / 100)
+}

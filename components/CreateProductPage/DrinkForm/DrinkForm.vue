@@ -21,12 +21,28 @@
 
       <v-col cols="12">
         <v-text-field
-          v-model.number="currentForm.price"
+          type="number"
+          v-model.number="currentForm.priceLittleSize"
           label="Цена"
           variant="outlined"
           prefix="₽"
-          hide-details
+          suffix="0.33"
+          hide-details="auto"
+          :hint="`Цена со скидкой: ${priceLittleWithDiscount}`"
+          persistent-hint
+        />
+      </v-col>
+      <v-col cols="12">
+        <v-text-field
           type="number"
+          v-model.number="currentForm.priceBigSize"
+          label="Цена"
+          variant="outlined"
+          prefix="₽"
+          suffix="0,5"
+          :hint="`Цена со скидкой: ${priceBigWithDiscount}`"
+          persistent-hint
+          hide-details="auto"
         />
       </v-col>
 
@@ -37,8 +53,6 @@
           label="Скидка"
           variant="outlined"
           hide-details="auto"
-          :hint="`Цена со скидкой: ${priceWithDiscount}`"
-          :persistent-hint="Boolean(priceWithDiscount)"
           prefix="%"
         />
       </v-col>
@@ -124,6 +138,7 @@
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
 import { shops } from '@/services/shops'
+import { getPriceWithDiscount } from '~/services/drink'
 
 const props = defineProps({
   isReadonly: {
@@ -149,14 +164,24 @@ const types = computed(() => [
   { name: 'Сливочное пиво', value: 'butter' },
 ])
 
-const priceWithDiscount = computed(() => {
+const priceLittleWithDiscount = computed(() => {
   if (!currentForm.value.discount) {
     return 0
   }
 
-  const { price, discount } = currentForm.value
+  const { priceLittleSize, discount } = currentForm.value
 
-  return price - price * (discount / 100)
+  return getPriceWithDiscount(priceLittleSize, discount)
+})
+
+const priceBigWithDiscount = computed(() => {
+  if (!currentForm.value.discount) {
+    return 0
+  }
+
+  const { priceBigSize, discount } = currentForm.value
+
+  return getPriceWithDiscount(priceBigSize, discount)
 })
 
 function submit() {

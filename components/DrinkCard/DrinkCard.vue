@@ -35,10 +35,12 @@
           {{ priceWithDiscount }}
         </div>
 
-        <div class="drink-card__discount-without">{{ drink.price }} ₽</div>
+        <div class="drink-card__discount-without">
+          {{ drink.priceLittleSize }} ₽
+        </div>
       </div>
 
-      <div v-else class="drink-card__price">{{ drink.price }} ₽</div>
+      <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
 
       <div class="text-subtitle-1">
         {{ drink.description }}
@@ -74,7 +76,7 @@
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { locations } from '@/services/drink'
+import { getPriceWithDiscount, locations } from '@/services/drink'
 
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
 import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
@@ -93,7 +95,7 @@ const priceWithDiscount = computed(() => {
     return 0
   }
 
-  return props.drink.price - props.drink.price * (props.drink.discount / 100)
+  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
 })
 
 const getLocation = (location: number) =>

@@ -6,15 +6,9 @@
       </product-title>
 
       <v-card-text>
-        <div class="drink-modal__discount" v-if="drink.discount">
-          <div class="drink-modal__discount-with drink-card__price">
-            {{ priceWithDiscount }}
-          </div>
-
-          <div class="drink-modal__discount-without">{{ drink.price }} ₽</div>
+        <div v-if="!drink.priceBigSize" class="drink-modal__price">
+          {{ drink.priceLittleSize }} ₽
         </div>
-
-        <div v-else class="drink-modal__price">{{ drink.price }} ₽</div>
 
         <div class="mb-4">{{ drink.description }}</div>
 
@@ -29,6 +23,36 @@
 
         <bar-locations :locations="drink.location" />
 
+        <div
+          class="drink-modal__discount mt-6"
+          v-if="drink.discount && drink.priceLittleSize"
+        >
+          <div class="drink-modal__discount-with drink-card__price">
+            {{ priceLittleWithDiscount }}
+          </div>
+
+          <div class="drink-modal__discount-without">
+            {{ drink.priceLittleSize }} ₽
+          </div>
+
+          <span class="drink-modal__size">за 0,33</span>
+        </div>
+
+        <div
+          class="drink-modal__discount"
+          v-if="drink.discount && drink.priceBigSize"
+        >
+          <div class="drink-modal__discount-with drink-card__price">
+            {{ priceBigWithDiscount }}
+          </div>
+
+          <div class="drink-modal__discount-without">
+            {{ drink.priceBigSize }} ₽
+          </div>
+
+          <span class="drink-modal__size">за 0,5</span>
+        </div>
+
         <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
       </v-card-text>
 
@@ -39,7 +63,7 @@
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { deleteDrink } from '@/services/drink'
+import { deleteDrink, getPriceWithDiscount } from '@/services/drink'
 
 const props = defineProps({
   value: {
@@ -65,12 +89,20 @@ watch(
   () => (currentValue.value = props.value),
 )
 
-const priceWithDiscount = computed(() => {
+const priceLittleWithDiscount = computed(() => {
   if (!props.drink.discount) {
     return 0
   }
 
-  return props.drink.price - props.drink.price * (props.drink.discount / 100)
+  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+})
+
+const priceBigWithDiscount = computed(() => {
+  if (!props.drink.discount) {
+    return 0
+  }
+
+  return getPriceWithDiscount(props.drink.priceBigSize, props.drink.discount)
 })
 
 async function onDeleteDrink() {

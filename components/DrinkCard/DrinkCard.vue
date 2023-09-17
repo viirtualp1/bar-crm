@@ -30,7 +30,8 @@
     </template>
 
     <v-card-text>
-      <div class="drink-card__discount" v-if="drink.discount">
+      <div v-if="drink.inStock" class="drink-card__price">Нет в наличии</div>
+      <div class="drink-card__discount" v-else-if="drink.discount">
         <div class="drink-card__discount-with drink-card__price">
           {{ priceWithDiscount }}
         </div>

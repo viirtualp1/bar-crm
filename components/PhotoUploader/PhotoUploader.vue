@@ -7,27 +7,30 @@
         variant="outlined"
         hide-details="auto"
       />
+
       <v-btn class="photo-uploader__add" x-small @click="add">Добавить</v-btn>
     </div>
 
     <div class="photo-uploader__added">
       <v-chip
-        closable
         color="info"
-        label
         class="photo-uploader__photo"
         v-for="(photo, idx) in currentImages"
         :key="idx"
+        closable
+        label
       >
         <v-icon start icon="mdi-camera"></v-icon>
 
-        {{ truncatedPhoto(photo) }}
+        {{ truncate(photo) }}
       </v-chip>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { truncate } from '@/utils/text'
+
 defineProps({
   images: {
     type: Array as PropType<string[]>,
@@ -54,10 +57,6 @@ function add() {
 
 function remove(idx: number) {
   currentImages.value.splice(idx, 1)
-}
-
-function truncatedPhoto(name: string) {
-  return name.length > 20 ? `${name.slice(0, 40)}...` : name
 }
 </script>
 

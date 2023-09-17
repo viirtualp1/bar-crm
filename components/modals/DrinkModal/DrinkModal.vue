@@ -11,21 +11,10 @@
           {{ drink.priceLittleSize }} ₽
         </div>
 
-        <div class="mb-4">{{ drink.description }}</div>
-
-        <div class="drink-modal__chips mt-2">
-          <v-chip class="drink-card__chip mr-2" color="error">
-            Крепкость {{ drink.strength }}
-          </v-chip>
-          <v-chip class="drink-card__chip" color="success">
-            Плотность {{ drink.density }}
-          </v-chip>
-        </div>
-
-        <bar-locations :locations="drink.location" />
+        <div class="drink-modal__description">{{ drink.description }}</div>
 
         <div
-          class="drink-modal__discount mt-6"
+          class="drink-modal__discount"
           v-if="drink.inStock && drink.discount && drink.priceLittleSize"
         >
           <div class="drink-modal__discount-with drink-card__price">
@@ -55,6 +44,11 @@
         </div>
 
         <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
+
+        <drink-characteristics
+          class="drink-modal__characteristics"
+          :drink="drink"
+        />
       </v-card-text>
 
       <product-actions @delete:product="onDeleteDrink" />

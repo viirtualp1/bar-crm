@@ -1,8 +1,8 @@
 @import 'assets/media';
 
 .images-slider {
+  max-width: 340px;
   height: 200px !important;
-  margin-top: 22px;
 
   &__image {
     border-radius: 22px;

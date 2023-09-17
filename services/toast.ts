@@ -1,6 +1,5 @@
 import Swal, {
   SweetAlertOptions,
-  SweetAlertResult,
   SweetAlertUpdatableParameters,
 } from 'sweetalert2'
 

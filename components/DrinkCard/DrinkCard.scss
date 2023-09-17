@@ -17,6 +17,14 @@
     justify-content: space-between;
   }
 
+  &__description {
+    font-size: 16px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    line-height: 1.75rem;
+    letter-spacing: 0.009375em;
+  }
+
   &__price {
     font-size: 20px;
     font-weight: 700;
@@ -40,19 +48,5 @@
 
   &__edit-link {
     display: flex;
-  }
-
-  &__chips {
-    display: flex;
-  }
-
-  &__chip {
-    width: fit-content;
-  }
-
-  &__location {
-    width: fit-content;
-    padding: 0 6px !important;
-    margin-top: 12px !important;
   }
 }

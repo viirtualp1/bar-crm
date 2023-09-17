@@ -34,6 +34,12 @@ export const locations = {
   3: 'Бар 3',
 }
 
+export const types = {
+  draft: 'Разливное пиво',
+  banned: 'Баночное пиво',
+  butter: 'Сливочное пиво',
+}
+
 export function getPriceWithDiscount(price: number, discount) {
   return price - price * (discount / 100)
 }

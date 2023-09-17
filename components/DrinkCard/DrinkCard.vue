@@ -1,5 +1,5 @@
 <template>
-  <v-card class="drink-card mx-auto" @click="openDrinkModal">
+  <v-card class="drink-card" @click="openDrinkModal">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -30,7 +30,7 @@
     </template>
 
     <v-card-text>
-      <div v-if="drink.inStock" class="drink-card__price">Нет в наличии</div>
+      <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
       <div class="drink-card__discount" v-else-if="drink.discount">
         <div class="drink-card__discount-with drink-card__price">
           {{ priceWithDiscount }}
@@ -43,28 +43,11 @@
 
       <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
 
-      <div class="text-subtitle-1">
+      <div class="drink-card__description">
         {{ drink.description }}
       </div>
 
-      <div class="drink-card__chips mt-2">
-        <v-chip class="drink-card__chip mr-2" color="error">
-          Крепкость {{ drink.strength }}
-        </v-chip>
-        <v-chip class="drink-card__chip" color="success">
-          Плотность {{ drink.density }}
-        </v-chip>
-      </div>
-
-      <v-chip
-        v-for="location in drink.location"
-        class="drink-card__location mr-2"
-        color="info"
-        text-color="white"
-      >
-        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
-        {{ getLocation(location) }}
-      </v-chip>
+      <drink-characteristics small :drink="drink" />
     </v-card-text>
 
     <drink-modal
@@ -98,9 +81,6 @@ const priceWithDiscount = computed(() => {
 
   return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
 })
-
-const getLocation = (location: number) =>
-  locations[location as keyof typeof locations]
 </script>
 
 <style lang="scss" src="./DrinkCard.scss"></style>

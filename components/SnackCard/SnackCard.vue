@@ -60,6 +60,7 @@ import { SnackData } from '@/types/product'
 import { locations } from '@/services/drink'
 
 import useSnackModal from '@/components/modals/SnackModal/useSnackModal'
+import SnackModal from '@/components/modals/SnackModal/SnackModal.vue'
 
 defineProps({
   snack: {

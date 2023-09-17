@@ -6,7 +6,8 @@
       </product-title>
 
       <v-card-text>
-        <div v-if="!drink.priceBigSize" class="drink-modal__price">
+        <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
+        <div v-else-if="!drink.priceBigSize" class="drink-card__price">
           {{ drink.priceLittleSize }} ₽
         </div>
 
@@ -25,7 +26,7 @@
 
         <div
           class="drink-modal__discount mt-6"
-          v-if="drink.discount && drink.priceLittleSize"
+          v-if="drink.inStock && drink.discount && drink.priceLittleSize"
         >
           <div class="drink-modal__discount-with drink-card__price">
             {{ priceLittleWithDiscount }}

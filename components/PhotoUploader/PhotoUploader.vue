@@ -63,7 +63,6 @@ function add() {
   }
 
   image.value?.forEach(async (image: File) => {
-    console.log(image)
     currentImages.value.push(image.name)
 
     props.drink

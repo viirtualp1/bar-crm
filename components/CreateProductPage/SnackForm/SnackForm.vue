@@ -51,20 +51,6 @@
       </v-col>
 
       <v-col cols="12">
-        <v-select
-          label="Характеристики"
-          v-model="currentForm.types"
-          variant="outlined"
-          :items="types"
-          item-title="name"
-          item-value="value"
-          multiple
-          chips
-          hide-details="auto"
-        />
-      </v-col>
-
-      <v-col cols="12">
         <photo-uploader
           :id="currentForm.id"
           v-model:images="currentForm.images"
@@ -117,8 +103,6 @@ const emit = defineEmits({
 })
 
 const currentForm = ref<SnackData | FoodData>(props.form)
-
-const types = computed(() => [{ name: 'Кухня', value: 'kitchen' }])
 
 function submit() {
   let event = 'submit'

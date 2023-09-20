@@ -106,13 +106,8 @@
 </template>
 
 <script setup lang="ts">
-import { getDrinkImage, getDrinks } from '@/services/drink'
-import {
-  getKitchenFood,
-  getSnacks,
-  getSnackImage,
-  getFoodImage,
-} from '@/services/snack'
+import { getDrinks, getDrinkImage } from '@/services/drink'
+import { getKitchenFood, getSnacks, getSnackImage } from '@/services/snack'
 
 import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 
@@ -180,43 +175,58 @@ function formatDrinks() {
 }
 
 function formatSnacks() {
-  let images = []
-
   snacks.value = (snacks.value as any).docs.map((doc: any) => {
     return doc.data()
   })
 
-  snacks.value.map(async (snack) => {
-    snack.images.forEach((image) => {
-      const imageUrl = getDrinkImage(snack.id, image)
-      console.log(imageUrl)
-    })
-  })
+  const snacksNew = snacks.value.map(async (snack) => {
+    let images: string[] = []
 
-  snacks.value = snacks.value.map((snack) => {
+    for (const image of snack.images) {
+      let imageUrl = await getSnackImage(snack.id, image)
+
+      images.push(imageUrl)
+    }
+
     return {
       ...snack,
       images,
     }
   })
+
+  snacks.value = []
+  snacksNew.forEach(async (snackNew) => {
+    snackNew.then((res) => {
+      snacks.value.push(res)
+    })
+  })
 }
 
 function formatKitchenFoods() {
-  let images = []
-
   kitchenFood.value = (kitchenFood.value as any).docs.map((doc: any) => {
     return doc.data()
   })
 
-  kitchenFood.value.map(async (food) => {
-    images.push(await getFoodImage(food.id))
-  })
+  const kitchenFoodNew = kitchenFood.value.map(async (food) => {
+    let images: string[] = []
 
-  kitchenFood.value = kitchenFood.value.map((food) => {
+    for (const image of food.images) {
+      let imageUrl = await getSnackImage(food.id, image)
+
+      images.push(imageUrl)
+    }
+
     return {
       ...food,
       images,
     }
+  })
+
+  kitchenFood.value = []
+  kitchenFoodNew.forEach(async (foodNew) => {
+    foodNew.then((res) => {
+      kitchenFood.value.push(res)
+    })
   })
 }
 

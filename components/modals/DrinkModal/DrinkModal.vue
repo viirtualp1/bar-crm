@@ -6,59 +6,30 @@
       </product-title>
 
       <v-card-text>
-        <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
-        <div v-else-if="!drink.priceBigSize" class="drink-card__price">
-          {{ drink.priceLittleSize }} ₽
-        </div>
+        <drink-modal-body v-if="currentMode === Modes.VIEW" :drink="drink" />
 
-        <div class="drink-modal__description">{{ drink.description }}</div>
-
-        <div
-          class="drink-modal__discount"
-          v-if="drink.inStock && drink.discount && drink.priceLittleSize"
-        >
-          <div class="drink-modal__discount-with drink-card__price">
-            {{ priceLittleWithDiscount }}
-          </div>
-
-          <div class="drink-modal__discount-without">
-            {{ drink.priceLittleSize }} ₽
-          </div>
-
-          <span class="drink-modal__size">за 0,33</span>
-        </div>
-
-        <div
-          class="drink-modal__discount"
-          v-if="drink.discount && drink.priceBigSize"
-        >
-          <div class="drink-modal__discount-with drink-card__price">
-            {{ priceBigWithDiscount }}
-          </div>
-
-          <div class="drink-modal__discount-without">
-            {{ drink.priceBigSize }} ₽
-          </div>
-
-          <span class="drink-modal__size">за 0,5</span>
-        </div>
-
-        <images-slider v-if="drink.images.length > 0" :photos="drink.images" />
-
-        <drink-characteristics
-          class="drink-modal__characteristics"
-          :drink="drink"
-        />
+        <drink-form v-if="currentMode === Modes.EDIT" :form="drinkForm" />
       </v-card-text>
 
-      <product-actions @delete:product="onDeleteDrink" />
+      <product-actions
+        @edit:product="onEditProduct"
+        @delete:product="onDeleteDrink"
+      />
     </v-card>
   </product-modal>
 </template>
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { deleteDrink, getPriceWithDiscount } from '@/services/drink'
+import { deleteDrink } from '@/services/drink'
+
+import DrinkModalBody from './DrinkModalBody/DrinkModalBody.vue'
+import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
+
+enum Modes {
+  EDIT = 'edit',
+  VIEW = 'view',
+}
 
 const props = defineProps({
   value: {
@@ -75,35 +46,25 @@ const emit = defineEmits({
   close: () => undefined,
 })
 
-const currentValue = ref(false)
+const currentMode = ref<Modes>(Modes.VIEW)
 
-const nuxt = useNuxtApp()
+const currentValue = ref(false)
 
 watch(
   () => props.value,
   () => (currentValue.value = props.value),
 )
 
-const priceLittleWithDiscount = computed(() => {
-  if (!props.drink.discount) {
-    return 0
-  }
-
-  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
-})
-
-const priceBigWithDiscount = computed(() => {
-  if (!props.drink.discount) {
-    return 0
-  }
-
-  return getPriceWithDiscount(props.drink.priceBigSize, props.drink.discount)
-})
+const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
   await deleteDrink(props.drink.id)
 
   location.reload()
+}
+
+function onEditProduct() {
+  currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
 }
 
 function close() {

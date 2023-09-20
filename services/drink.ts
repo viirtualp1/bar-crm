@@ -40,6 +40,6 @@ export const types = {
   butter: 'Сливочное пиво',
 }
 
-export function getPriceWithDiscount(price: number, discount) {
+export function getPriceWithDiscount(price: number, discount: number) {
   return price - price * (discount / 100)
 }

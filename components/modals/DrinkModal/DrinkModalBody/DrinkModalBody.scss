@@ -1,0 +1,24 @@
+.drink-modal-body {
+  &__description {
+    margin-bottom: 8px;
+  }
+
+  &__discount {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  &__discount-without {
+    text-decoration: line-through;
+    font-size: 16px;
+  }
+
+  &__discount-with {
+    margin-bottom: 0;
+  }
+
+  &__characteristics {
+    margin-top: 12px;
+  }
+}

@@ -37,15 +37,18 @@
           </v-col>
         </template>
 
-        <template v-for="snack in kitchenSnacks" :key="snack.id">
-          <v-col v-if="currentTab === 4 && snack.name" cols="12" md="4">
-            <snack-card :snack="snack" />
+        <template v-for="food in kitchenFood" :key="food.id">
+          <v-col v-if="currentTab === 4 && food.name" cols="12" md="4">
+            <snack-card :snack="food" />
           </v-col>
         </template>
 
         <template v-for="product in discountProducts" :key="product.id">
           <v-col v-if="currentTab === 5 && product" cols="12" md="4">
-            <drink-card v-if="product.strength" :drink="product" />
+            <drink-card
+              v-if="product.type === ProductEnum.DRINK"
+              :drink="product"
+            />
             <snack-card v-else :snack="product" />
           </v-col>
         </template>
@@ -104,12 +107,11 @@
 
 <script setup lang="ts">
 import { getDrinks } from '@/services/drink'
-import { getSnacks } from '@/services/snack'
+import { getSnacks, getKitchenFood } from '@/services/snack'
 
-import { DrinkData, SnackData } from '@/types/product'
+import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 
 import useFilteredDrinks from '@/composables/useFilteredDrinks'
-import useFilteredSnacks from '@/composables/useFilteredSnacks'
 import useFilteredProducts from '@/composables/useFilteredProducts'
 
 const isLoading = ref(false)
@@ -117,9 +119,9 @@ const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
+const kitchenFood = ref<SnackData[]>([])
 
 const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
-const { kitchenSnacks } = useFilteredSnacks(snacks)
 const { discountProducts } = useFilteredProducts(drinks, snacks)
 
 async function fetchData() {
@@ -133,6 +135,10 @@ async function fetchData() {
     // @ts-ignore
     snacks.value = await getSnacks()
     formatSnacks()
+
+    // @ts-ignore
+    kitchenFood.value = await getKitchenFood()
+    formatKitchenFoods()
   } catch (err) {
     console.error(err)
   } finally {
@@ -148,6 +154,12 @@ function formatDrinks() {
 
 function formatSnacks() {
   snacks.value = (snacks.value as any).docs.map((doc: any) => {
+    return doc.data()
+  })
+}
+
+function formatKitchenFoods() {
+  kitchenFood.value = (kitchenFood.value as any).docs.map((doc: any) => {
     return doc.data()
   })
 }

@@ -29,16 +29,30 @@
       :loading="isLoading"
       @submit="addProduct"
     />
+
+    <snack-form
+      v-if="type === ProductEnum.FOOD"
+      :form="formFood"
+      :is-readonly="isLoading"
+      :loading="isLoading"
+      @submit="addProduct"
+    />
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { uuidv4 } from '@firebase/util'
 
-import { DrinkData, ProductEnum, ProductType, SnackData } from '@/types/product'
+import {
+  DrinkData,
+  FoodData,
+  ProductEnum,
+  ProductType,
+  SnackData,
+} from '@/types/product'
 
 import { postDrink } from '@/services/drink'
-import { postSnack } from '@/services/snack'
+import { postFood, postSnack } from '@/services/snack'
 import { toast } from '@/services/toast'
 
 import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
@@ -76,20 +90,39 @@ const formSnack = reactive<SnackData>({
   inStock: true,
 })
 
+const formFood = reactive<FoodData>({
+  type: ProductEnum.FOOD,
+  id: uuidv4(),
+  name: '',
+  images: [],
+  price: 0,
+  location: [],
+  discount: 0,
+  description: '',
+  types: [],
+  inStock: true,
+})
+
 const type = ref<ProductType>(ProductEnum.DRINK)
 
 const types = computed(() => [
   { value: 'Drink', name: 'Напиток' },
   { value: 'Snack', name: 'Закуска' },
+  { value: 'Food', name: 'Кухня' },
 ])
 
 async function addProduct() {
   isLoading.value = true
 
   try {
-    type.value === ProductEnum.DRINK
-      ? await postDrink(formDrink)
-      : await postSnack(formSnack)
+    switch (type.value) {
+      case ProductEnum.DRINK:
+        return await postDrink(formDrink)
+      case ProductEnum.SNACK:
+        return await postSnack(formSnack)
+      case ProductEnum.FOOD:
+        return await postFood(formFood)
+    }
 
     location.reload()
 

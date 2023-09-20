@@ -1,8 +1,9 @@
-export type ProductType = 'Drink' | 'Snack'
+export type ProductType = 'Drink' | 'Snack' | 'Food'
 
 export enum ProductEnum {
   DRINK = 'Drink',
   SNACK = 'Snack',
+  FOOD = 'Food',
 }
 
 export interface ProductData {
@@ -27,5 +28,10 @@ export type DrinkData = ProductData & {
 
 export type SnackData = ProductData & {
   type: ProductEnum.SNACK
+  price: number
+}
+
+export type FoodData = ProductData & {
+  type: ProductEnum.FOOD
   price: number
 }

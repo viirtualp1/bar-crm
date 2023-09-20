@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" @click="openSnackModal">
+  <v-card class="snack-card" @click="openSnackModal">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -17,7 +17,7 @@
     />
 
     <template #title>
-      <v-card-title class="drink-card__title">
+      <v-card-title class="snack-card__title">
         {{ snack.name }}
 
         <v-icon
@@ -34,11 +34,11 @@
         {{ snack.description }}
       </div>
 
-      <div class="text-subtitle-2 font-weight-bold">{{ snack.price }} ₽</div>
+      <div class="snack-card__price">{{ snack.price }} ₽</div>
 
       <v-chip
         v-for="location in snack.location"
-        class="drink-card__location mr-2"
+        class="snack-card__location mr-2"
         color="info"
         text-color="white"
       >

@@ -8,12 +8,19 @@
       <v-card-text>
         <drink-modal-body v-if="currentMode === Modes.VIEW" :drink="drink" />
 
-        <drink-form v-if="currentMode === Modes.EDIT" :form="drinkForm" />
+        <drink-form
+          v-if="currentMode === Modes.EDIT"
+          :form="drinkForm"
+          :loading="isLoading"
+          edit
+          @submit:edit="submitEditProduct"
+        />
       </v-card-text>
 
       <product-actions
         @edit:product="onEditProduct"
         @delete:product="onDeleteDrink"
+        :loading="isLoading"
       />
     </v-card>
   </product-modal>
@@ -21,7 +28,7 @@
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { deleteDrink } from '@/services/drink'
+import { deleteDrink, postDrink } from '@/services/drink'
 
 import DrinkModalBody from './DrinkModalBody/DrinkModalBody.vue'
 import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
@@ -49,6 +56,7 @@ const emit = defineEmits({
 const currentMode = ref<Modes>(Modes.VIEW)
 
 const currentValue = ref(false)
+const isLoading = ref(false)
 
 watch(
   () => props.value,
@@ -65,6 +73,18 @@ async function onDeleteDrink() {
 
 function onEditProduct() {
   currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
+}
+
+async function submitEditProduct(form: DrinkData) {
+  isLoading.value = true
+
+  try {
+    await postDrink(form)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 function close() {

@@ -19,13 +19,38 @@
           </v-col>
         </template>
 
+        <template v-for="drink in draftDrinks" :key="drink.id">
+          <v-col v-if="currentTab === 1 && drink.name" cols="12" md="4">
+            <drink-card :drink="drink" />
+          </v-col>
+        </template>
+
+        <template v-for="drink in nonAlcoholicDrinks" :key="drink.id">
+          <v-col v-if="currentTab === 2 && drink.name" cols="12" md="4">
+            <drink-card :drink="drink" />
+          </v-col>
+        </template>
+
         <template v-for="snack in snacks" :key="snack.id">
-          <v-col v-if="currentTab === 1 && snack.name" cols="12" md="4">
+          <v-col v-if="currentTab === 3 && snack.name" cols="12" md="4">
             <snack-card :snack="snack" />
           </v-col>
         </template>
 
-        <create-product-page v-if="currentTab === 2" />
+        <template v-for="snack in kitchenSnacks" :key="snack.id">
+          <v-col v-if="currentTab === 4 && snack.name" cols="12" md="4">
+            <snack-card :snack="snack" />
+          </v-col>
+        </template>
+
+        <template v-for="product in discountProducts" :key="product.id">
+          <v-col v-if="currentTab === 5 && product" cols="12" md="4">
+            <drink-card v-if="product.strength" :drink="product" />
+            <snack-card v-else :snack="product" />
+          </v-col>
+        </template>
+
+        <create-product-page v-if="currentTab === 6" />
       </template>
     </v-row>
 
@@ -34,7 +59,19 @@
         <v-btn>
           <v-icon>mdi-bottle-wine</v-icon>
 
-          Напитки
+          Пиво
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-beer</v-icon>
+
+          Разливное
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-beer</v-icon>
+
+          Пиво безалк
         </v-btn>
 
         <v-btn>
@@ -42,6 +79,19 @@
 
           Закуски
         </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-food</v-icon>
+
+          Кухня
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-food</v-icon>
+
+          Скидки
+        </v-btn>
+
         <v-btn>
           <v-icon>mdi-plus</v-icon>
 
@@ -58,11 +108,19 @@ import { getSnacks } from '@/services/snack'
 
 import { DrinkData, SnackData } from '@/types/product'
 
+import useFilteredDrinks from '@/composables/useFilteredDrinks'
+import useFilteredSnacks from '@/composables/useFilteredSnacks'
+import useFilteredProducts from '@/composables/useFilteredProducts'
+
 const isLoading = ref(false)
 const currentTab = ref(0)
 
 const drinks = ref<DrinkData[]>([])
 const snacks = ref<SnackData[]>([])
+
+const { nonAlcoholicDrinks, draftDrinks } = useFilteredDrinks(drinks)
+const { kitchenSnacks } = useFilteredSnacks(snacks)
+const { discountProducts } = useFilteredProducts(drinks, snacks)
 
 async function fetchData() {
   isLoading.value = true

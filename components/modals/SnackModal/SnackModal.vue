@@ -6,20 +6,37 @@
       </product-title>
 
       <v-card-text>
-        <div class="mb-4">{{ snack.description }}</div>
+        <snack-modal-body v-if="currentMode === Modes.VIEW" :snack="snack" />
 
-        <bar-locations :locations="snack.location" />
-
-        <images-slider v-if="snack.images.length > 0" :photos="snack.images" />
+        <snack-form
+          v-if="currentMode === Modes.EDIT"
+          :form="snackForm"
+          :loading="isLoading"
+          edit
+          @submit:edit="submitEditProduct"
+        />
       </v-card-text>
-      <product-actions @delete:product="onDeleteSnack" />
+
+      <product-actions
+        @edit:product="onEditProduct"
+        @delete:product="onDeleteSnack"
+        :loading="isLoading"
+      />
     </v-card>
   </product-modal>
 </template>
 
 <script setup lang="ts">
 import { SnackData } from '@/types/product'
-import { deleteSnack } from '@/services/snack'
+import { deleteSnack, postSnack } from '@/services/snack'
+
+import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
+import SnackModalBody from '@/components/modals/SnackModal/SnackModalBody/SnackModalBody.vue'
+
+enum Modes {
+  EDIT = 'edit',
+  VIEW = 'view',
+}
 
 const props = defineProps({
   value: {
@@ -38,6 +55,11 @@ const emit = defineEmits({
 
 const currentValue = ref(false)
 
+const currentMode = ref<Modes>(Modes.VIEW)
+const isLoading = ref(false)
+
+const snackForm = ref<SnackData>(props.snack)
+
 watch(
   () => props.value,
   () => {
@@ -48,6 +70,24 @@ watch(
 
 async function onDeleteSnack() {
   await deleteSnack(props.snack.id)
+
+  location.reload()
+}
+
+function onEditProduct() {
+  currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
+}
+
+async function submitEditProduct(form: SnackData) {
+  isLoading.value = true
+
+  try {
+    await postSnack(form)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 

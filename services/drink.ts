@@ -14,13 +14,11 @@ export function getDrinks() {
   return getDocs(query(collection(db, 'drinks')))
 }
 
-export function createDrink(data: DrinkData) {
+export function postDrink(data: DrinkData) {
   const { $db: db } = useNuxtApp()
 
   return setDoc(doc(db, 'drinks', data.id), data)
 }
-
-export function updateDrink(data: DrinkData) {}
 
 export function deleteDrink(id: string) {
   const { $db: db } = useNuxtApp()
@@ -38,6 +36,7 @@ export const types = {
   draft: 'Разливное пиво',
   banned: 'Баночное пиво',
   butter: 'Сливочное пиво',
+  'non-alcoholic': 'Безалкогольное пиво',
 }
 
 export function getPriceWithDiscount(price: number, discount: number) {

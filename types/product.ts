@@ -5,30 +5,27 @@ export enum ProductEnum {
   SNACK = 'Snack',
 }
 
-export interface DrinkData {
+export interface ProductData {
   id: string
   name: string
   images: string[]
-  priceLittleSize: number
-  priceBigSize: number
-  location: number[]
-  discount?: number
   description?: string
-  density?: number
-  strength?: number
-  isFiltered: boolean
+  discount?: number
+  location: number[]
   types: string[]
   inStock: boolean
 }
 
-export interface SnackData {
-  id: string
-  name: string
-  images: string[]
-  description: string
+export type DrinkData = ProductData & {
+  type: ProductEnum.DRINK
+  priceLittleSize: number
+  priceBigSize: number
+  density?: number
+  strength?: number
+  isFiltered: boolean
+}
+
+export type SnackData = ProductData & {
+  type: ProductEnum.SNACK
   price: number
-  location: number[]
-  discount?: number
-  types: string[]
-  inStock: boolean
 }

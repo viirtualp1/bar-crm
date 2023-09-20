@@ -18,6 +18,7 @@
       v-if="type === ProductEnum.DRINK"
       :form="formDrink"
       :is-readonly="isLoading"
+      :loading="isLoading"
       @submit="addProduct"
     />
 
@@ -25,6 +26,7 @@
       v-if="type === ProductEnum.SNACK"
       :form="formSnack"
       :is-readonly="isLoading"
+      :loading="isLoading"
       @submit="addProduct"
     />
   </v-container>
@@ -35,8 +37,8 @@ import { uuidv4 } from '@firebase/util'
 
 import { DrinkData, ProductEnum, ProductType, SnackData } from '@/types/product'
 
-import { createDrink } from '@/services/drink'
-import { createSnack } from '@/services/snack'
+import { postDrink } from '@/services/drink'
+import { postSnack } from '@/services/snack'
 import { toast } from '@/services/toast'
 
 import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
@@ -45,10 +47,12 @@ import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
 const isLoading = ref(false)
 
 const formDrink = reactive<DrinkData>({
+  type: ProductEnum.DRINK,
   id: uuidv4(),
   name: '',
   images: [],
-  price: 0,
+  priceLittleSize: 0,
+  priceBigSize: 0,
   location: [],
   discount: 0,
   description: '',
@@ -60,6 +64,7 @@ const formDrink = reactive<DrinkData>({
 })
 
 const formSnack = reactive<SnackData>({
+  type: ProductEnum.SNACK,
   id: uuidv4(),
   name: '',
   images: [],
@@ -83,8 +88,8 @@ async function addProduct() {
 
   try {
     type.value === ProductEnum.DRINK
-      ? await createDrink(formDrink)
-      : await createSnack(formSnack)
+      ? await postDrink(formDrink)
+      : await postSnack(formSnack)
 
     location.reload()
 

@@ -1,5 +1,10 @@
 <template>
-  <v-form class="drink-form" :readonly="isReadonly" @submit.prevent="submit">
+  <v-form
+    class="drink-form"
+    :readonly="isReadonly"
+    :disabled="loading"
+    @submit.prevent="submit"
+  >
     <v-row>
       <v-col cols="12">
         <v-text-field
@@ -105,7 +110,7 @@
           multiple
           chips
           hide-details="auto"
-        ></v-select>
+        />
       </v-col>
 
       <v-col cols="12">
@@ -129,7 +134,9 @@
       </v-col>
 
       <v-col cols="12">
-        <v-btn color="success" type="submit" size="large"> Создать </v-btn>
+        <v-btn :loading="loading" color="success" type="submit" size="large">
+          {{ edit ? 'Сохранить' : 'Создать' }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-form>
@@ -141,27 +148,36 @@ import { shops } from '@/services/shops'
 import { getPriceWithDiscount } from '~/services/drink'
 
 const props = defineProps({
+  form: {
+    type: Object as PropType<DrinkData>,
+    default: null,
+  },
+  edit: {
+    type: Boolean,
+    default: false,
+  },
   isReadonly: {
     type: Boolean,
     default: false,
   },
-  form: {
-    type: Object as PropType<DrinkData>,
-    default: null,
+  loading: {
+    type: Boolean,
+    default: false,
   },
 })
 
 const emit = defineEmits({
   submit: (_form: DrinkData) => true,
+  'submit:edit': (_form: DrinkData) => true,
 })
 
 const currentForm = ref<DrinkData>(props.form)
 
 const types = computed(() => [
-  { name: 'Кухня', value: 'kitchen' },
   { name: 'Разливное пиво', value: 'draft' },
   { name: 'Баночное пиво', value: 'banned' },
   { name: 'Сливочное пиво', value: 'butter' },
+  { name: 'Безалкогольное пиво', value: 'non-alcoholic' },
 ])
 
 const priceLittleWithDiscount = computed(() => {
@@ -185,7 +201,14 @@ const priceBigWithDiscount = computed(() => {
 })
 
 function submit() {
-  emit('submit', currentForm.value)
+  let event = 'submit'
+
+  if (props.edit) {
+    event += ':edit'
+  }
+
+  // @ts-ignore
+  emit(event, currentForm.value)
 }
 </script>
 

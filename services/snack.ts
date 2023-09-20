@@ -1,11 +1,11 @@
 import { SnackData } from '@/types/product'
 import {
-  addDoc,
   collection,
   getDocs,
   query,
   doc,
   deleteDoc,
+  setDoc,
 } from 'firebase/firestore'
 
 export function getSnacks() {
@@ -14,18 +14,14 @@ export function getSnacks() {
   return getDocs(query(collection(db, 'snacks')))
 }
 
-export function getSnack(id: number) {}
-
-export function createSnack(data: SnackData) {
+export function postSnack(data: SnackData) {
   const { $db: db } = useNuxtApp()
 
-  return addDoc(collection(db, 'snacks'), data)
+  return setDoc(doc(db, 'snacks', data.id), data)
 }
-
-export function updateSnack(data: SnackData) {}
 
 export function deleteSnack(id: string) {
   const { $db: db } = useNuxtApp()
 
-  return deleteDoc(doc(db, 'snack', id))
+  return deleteDoc(doc(db, 'snacks', id))
 }

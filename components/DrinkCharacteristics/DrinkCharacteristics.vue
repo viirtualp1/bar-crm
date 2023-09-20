@@ -26,7 +26,12 @@
         color="teal"
         text-color="white"
       >
-        <v-icon icon="mdi-glass-mug-variant" class="mr-1" />
+        <v-icon
+          v-if="location === 0"
+          icon="mdi-glass-mug-variant"
+          class="mr-1"
+        />
+        <v-icon v-if="location === 1" icon="mdi-car-back" class="mr-1" />
 
         {{ getLocation(location) }}
       </v-chip>

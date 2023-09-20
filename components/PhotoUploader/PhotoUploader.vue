@@ -1,11 +1,12 @@
 <template>
   <div class="photo-uploader">
     <div class="photo-uploader__input">
-      <v-text-field
+      <v-file-input
         v-model="image"
-        label="Вставьте ссылку на изображение"
+        label="Загрузите изображение"
         variant="outlined"
         hide-details="auto"
+        multiple
       />
 
       <v-btn class="photo-uploader__add" x-small @click="add">Добавить</v-btn>
@@ -19,6 +20,7 @@
         :key="idx"
         closable
         label
+        @click:close="remove(photo)"
       >
         <v-icon start icon="mdi-camera"></v-icon>
 
@@ -30,8 +32,18 @@
 
 <script setup lang="ts">
 import { truncate } from '@/utils/text'
+import { uploadDrinkImage, removeDrinkImage } from '@/services/drink'
+import { uploadSnackImage, removeSnackImage } from '@/services/snack'
 
-defineProps({
+const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+  },
+  drink: {
+    type: Boolean,
+    default: false,
+  },
   images: {
     type: Array as PropType<string[]>,
     default: () => [],
@@ -43,20 +55,29 @@ const emit = defineEmits({
 })
 
 const currentImages = ref<string[]>([])
-const image = ref('')
+const image = ref<File[]>()
 
 function add() {
   if (!image.value) {
     return
   }
 
-  currentImages.value.push(image.value)
+  image.value?.forEach(async (image: File) => {
+    console.log(image)
+    currentImages.value.push(image.name)
+
+    props.drink
+      ? await uploadDrinkImage(props.id, image)
+      : await uploadSnackImage(props.id, image)
+  })
 
   emit('update:images', currentImages.value)
 }
 
-function remove(idx: number) {
-  currentImages.value.splice(idx, 1)
+async function remove(image: string) {
+  props.drink
+    ? await removeDrinkImage(props.id, image)
+    : await removeSnackImage(props.id, image)
 }
 </script>
 

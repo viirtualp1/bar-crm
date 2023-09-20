@@ -65,7 +65,10 @@
       </v-col>
 
       <v-col cols="12">
-        <photo-uploader v-model:images="currentForm.images" />
+        <photo-uploader
+          :id="currentForm.id"
+          v-model:images="currentForm.images"
+        />
       </v-col>
 
       <v-col class="snack-form__controls" cols="12">

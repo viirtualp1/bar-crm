@@ -81,6 +81,8 @@ const priceWithDiscount = computed(() => {
 
   return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
 })
+
+onMounted(() => {})
 </script>
 
 <style lang="scss" src="./DrinkCard.scss"></style>

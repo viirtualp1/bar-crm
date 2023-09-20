@@ -7,6 +7,13 @@ import {
   deleteDoc,
   setDoc,
 } from 'firebase/firestore'
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+} from 'firebase/storage'
 
 export function getSnacks() {
   const { $db: db } = useNuxtApp()
@@ -36,4 +43,28 @@ export function deleteSnack(id: string) {
   const { $db: db } = useNuxtApp()
 
   return deleteDoc(doc(db, 'snacks', id))
+}
+
+export function uploadSnackImage(id: string, file: File) {
+  const { $storage: storage } = useNuxtApp()
+
+  return uploadBytes(ref(storage, `snacks/${id}/${file.name}`), file)
+}
+
+export function removeSnackImage(id: string, file: string) {
+  const { $storage: storage } = useNuxtApp()
+
+  return deleteObject(ref(storage, `snacks/${id}/${file}`))
+}
+
+export function getSnackImage(id: string, fileName: string) {
+  const { $storage: storage } = useNuxtApp()
+
+  return getDownloadURL(ref(storage, `snacks/${id}/${fileName}`))
+}
+
+export function getFoodImage(id: string, fileName: string) {
+  const { $storage: storage } = useNuxtApp()
+
+  return listAll(ref(storage, `food/${id}/${fileName}`))
 }

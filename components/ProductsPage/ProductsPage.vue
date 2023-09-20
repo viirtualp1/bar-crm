@@ -106,8 +106,13 @@
 </template>
 
 <script setup lang="ts">
-import { getDrinks } from '@/services/drink'
-import { getSnacks, getKitchenFood } from '@/services/snack'
+import { getDrinkImage, getDrinks } from '@/services/drink'
+import {
+  getKitchenFood,
+  getSnacks,
+  getSnackImage,
+  getFoodImage,
+} from '@/services/snack'
 
 import { DrinkData, ProductEnum, SnackData } from '@/types/product'
 
@@ -150,17 +155,68 @@ function formatDrinks() {
   drinks.value = (drinks.value as any).docs.map((doc: any) => {
     return doc.data()
   })
+
+  const drinksNew = drinks.value.map(async (drink) => {
+    let images: string[] = []
+
+    for (const image of drink.images) {
+      let imageUrl = await getDrinkImage(drink.id, image)
+
+      images.push(imageUrl)
+    }
+
+    return {
+      ...drink,
+      images,
+    }
+  })
+
+  drinks.value = []
+  drinksNew.forEach(async (drinkNew) => {
+    drinkNew.then((res) => {
+      drinks.value.push(res)
+    })
+  })
 }
 
 function formatSnacks() {
+  let images = []
+
   snacks.value = (snacks.value as any).docs.map((doc: any) => {
     return doc.data()
+  })
+
+  snacks.value.map(async (snack) => {
+    snack.images.forEach((image) => {
+      const imageUrl = getDrinkImage(snack.id, image)
+      console.log(imageUrl)
+    })
+  })
+
+  snacks.value = snacks.value.map((snack) => {
+    return {
+      ...snack,
+      images,
+    }
   })
 }
 
 function formatKitchenFoods() {
+  let images = []
+
   kitchenFood.value = (kitchenFood.value as any).docs.map((doc: any) => {
     return doc.data()
+  })
+
+  kitchenFood.value.map(async (food) => {
+    images.push(await getFoodImage(food.id))
+  })
+
+  kitchenFood.value = kitchenFood.value.map((food) => {
+    return {
+      ...food,
+      images,
+    }
   })
 }
 

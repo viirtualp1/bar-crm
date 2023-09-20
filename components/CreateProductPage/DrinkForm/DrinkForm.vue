@@ -114,7 +114,11 @@
       </v-col>
 
       <v-col cols="12">
-        <photo-uploader v-model:images="currentForm.images" />
+        <photo-uploader
+          :id="currentForm.id"
+          v-model:images="currentForm.images"
+          drink
+        />
       </v-col>
 
       <v-col class="drink-form__controls" cols="12">

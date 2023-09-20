@@ -6,6 +6,6 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Bar CRM',
+  title: 'Три волчонка CRM',
 })
 </script>

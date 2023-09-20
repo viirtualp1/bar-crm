@@ -23,7 +23,6 @@ export type DrinkData = ProductData & {
   priceBigSize: number
   density?: number
   strength?: number
-  isFiltered: boolean
 }
 
 export type SnackData = ProductData & {

@@ -72,7 +72,6 @@ const formDrink = reactive<DrinkData>({
   description: '',
   density: 0,
   strength: 0,
-  isFiltered: false,
   types: [],
   inStock: true,
 })

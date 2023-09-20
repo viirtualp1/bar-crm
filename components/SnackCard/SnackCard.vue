@@ -6,7 +6,7 @@
         color="deep-purple"
         height="4"
         indeterminate
-      ></v-progress-linear>
+      />
     </template>
 
     <v-img
@@ -43,6 +43,7 @@
         text-color="white"
       >
         <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
+
         {{ getLocation(location) }}
       </v-chip>
 

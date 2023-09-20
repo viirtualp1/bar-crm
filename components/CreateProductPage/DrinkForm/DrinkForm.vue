@@ -119,14 +119,6 @@
 
       <v-col class="drink-form__controls" cols="12">
         <v-checkbox
-          v-model="currentForm.isFiltered"
-          label="Фильтрованное"
-          hide-details="auto"
-        />
-      </v-col>
-
-      <v-col class="drink-form__controls" cols="12">
-        <v-checkbox
           v-model="currentForm.inStock"
           label="В наличии"
           hide-details="auto"
@@ -178,6 +170,9 @@ const types = computed(() => [
   { name: 'Баночное пиво', value: 'banned' },
   { name: 'Сливочное пиво', value: 'butter' },
   { name: 'Безалкогольное пиво', value: 'non-alcoholic' },
+  { name: 'Фильтрованное', value: 'filtered' },
+  { name: 'Светлое', value: 'light' },
+  { name: 'Темное', value: 'dark' },
 ])
 
 const priceLittleWithDiscount = computed(() => {

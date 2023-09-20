@@ -2,7 +2,7 @@
   <div class="snack-modal-body">
     <div class="mb-4">{{ snack.description }}</div>
 
-    <bar-locations :locations="snack.location" />
+    <bar-locations :locations="snack.locations" />
 
     <images-slider v-if="snack.images.length > 0" :photos="snack.images" />
   </div>

@@ -37,7 +37,7 @@
 
       <v-col cols="12">
         <v-select
-          v-model="currentForm.location"
+          v-model="currentForm.locations"
           variant="outlined"
           label="Доступно в "
           hide-details="auto"

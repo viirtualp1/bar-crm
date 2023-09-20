@@ -26,11 +26,7 @@ export function deleteDrink(id: string) {
   return deleteDoc(doc(db, 'drinks', id))
 }
 
-export const locations = {
-  1: 'Бар 1',
-  2: 'Бар 2',
-  3: 'Бар 3',
-}
+export const locations = ['Бар', 'Доставка']
 
 export const types = {
   draft: 'Разливное пиво',

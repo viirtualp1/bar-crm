@@ -21,12 +21,13 @@
 
     <div class="drink-characteristics__locations">
       <v-chip
-        v-for="location in drink.location"
+        v-for="location in drink.locations"
         class="drink-characteristics__location"
         color="teal"
         text-color="white"
       >
-        <v-icon icon="mdi-glass-mug-variant" class="mr-1"></v-icon>
+        <v-icon icon="mdi-glass-mug-variant" class="mr-1" />
+
         {{ getLocation(location) }}
       </v-chip>
     </div>

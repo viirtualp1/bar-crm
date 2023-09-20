@@ -7,18 +7,23 @@
       v-for="(location, idx) in locations"
       :key="idx"
     >
-      Бар {{ location }}
+      {{ getLocation(Number(location)) }}
     </v-chip>
   </div>
 </template>
 
 <script setup lang="ts">
+import { locations } from '@/services/drink'
+
 defineProps({
   locations: {
     type: Array as PropType<number[]>,
     default: () => [],
   },
 })
+
+const getLocation = (location: number) =>
+  locations[location as keyof typeof locations]
 </script>
 
 <style lang="scss" src="./BarLocations.scss"></style>

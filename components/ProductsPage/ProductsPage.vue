@@ -63,7 +63,7 @@
         </v-btn>
 
         <v-btn>
-          <v-icon>mdi-beer</v-icon>
+          <v-icon>mdi-glass-mug</v-icon>
 
           Разливное
         </v-btn>
@@ -81,13 +81,13 @@
         </v-btn>
 
         <v-btn>
-          <v-icon>mdi-food</v-icon>
+          <v-icon>mdi-fridge</v-icon>
 
           Кухня
         </v-btn>
 
         <v-btn>
-          <v-icon>mdi-food</v-icon>
+          <v-icon>mdi-sale</v-icon>
 
           Скидки
         </v-btn>

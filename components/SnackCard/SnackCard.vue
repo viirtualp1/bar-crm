@@ -30,11 +30,11 @@
     </template>
 
     <v-card-text>
-      <div class="text-subtitle-1 mt-3">
+      <div class="snack-card__price">{{ snack.price }} ₽</div>
+
+      <div class="snack-card__description">
         {{ snack.description }}
       </div>
-
-      <div class="snack-card__price">{{ snack.price }} ₽</div>
 
       <v-chip
         v-for="location in snack.location"

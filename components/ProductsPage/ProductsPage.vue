@@ -155,9 +155,13 @@ function formatDrinks() {
     let images: string[] = []
 
     for (const image of drink.images) {
-      let imageUrl = await getDrinkImage(drink.id, image)
-
-      images.push(imageUrl)
+      try {
+        let imageUrl = await getDrinkImage(drink.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
+        console.error(err)
+      }
     }
 
     return {
@@ -183,9 +187,14 @@ function formatSnacks() {
     let images: string[] = []
 
     for (const image of snack.images) {
-      let imageUrl = await getSnackImage(snack.id, image)
+      try {
+        let imageUrl = await getSnackImage(snack.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
 
-      images.push(imageUrl)
+        console.error(err)
+      }
     }
 
     return {
@@ -211,9 +220,14 @@ function formatKitchenFoods() {
     let images: string[] = []
 
     for (const image of food.images) {
-      let imageUrl = await getSnackImage(food.id, image)
+      try {
+        let imageUrl = await getSnackImage(food.id, image)
+        images.push(imageUrl)
+      } catch (err) {
+        images.push(image)
 
-      images.push(imageUrl)
+        console.error(err)
+      }
     }
 
     return {

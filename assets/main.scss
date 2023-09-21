@@ -52,3 +52,11 @@ a {
 .v-carousel__controls {
   top: 312px;
 }
+
+.v-bottom-navigation {
+  overflow: auto !important;
+}
+
+.v-bottom-navigation__content {
+  justify-content: normal !important;
+}

@@ -1,4 +1,4 @@
-import { FoodData, SnackData } from '@/types/product'
+import { DiscountData, FoodData, SnackData } from '@/types/product'
 import {
   collection,
   getDocs,
@@ -27,6 +27,12 @@ export function getKitchenFood() {
   return getDocs(query(collection(db, 'food')))
 }
 
+export function getDiscountProducts() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'discount')))
+}
+
 export function postSnack(data: SnackData) {
   const { $db: db } = useNuxtApp()
 
@@ -37,6 +43,12 @@ export function postFood(data: FoodData) {
   const { $db: db } = useNuxtApp()
 
   return setDoc(doc(db, 'food', data.id), data)
+}
+
+export function postDiscountProduct(data: DiscountData) {
+  const { $db: db } = useNuxtApp()
+
+  return setDoc(doc(db, 'discount', data.id), data)
 }
 
 export function deleteSnack(id: string) {

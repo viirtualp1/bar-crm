@@ -57,7 +57,7 @@ export const types = {
   draft: 'Разливное пиво',
   banned: 'Баночное пиво',
   butter: 'Сливочное пиво',
-  'non-alcoholic': 'Безалкогольное пиво',
+  'non-alcoholic': 'Безалкогольные напитки',
   filtered: 'Фильтрованное',
   light: 'Светлое',
   dark: 'Темное',

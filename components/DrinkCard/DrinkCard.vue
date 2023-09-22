@@ -44,7 +44,7 @@
       <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
 
       <div class="drink-card__description">
-        {{ drink.description }}
+        {{ truncate(drink.description) }}
       </div>
 
       <drink-characteristics :drink="drink" />
@@ -60,7 +60,8 @@
 
 <script setup lang="ts">
 import { DrinkData } from '@/types/product'
-import { getPriceWithDiscount, locations } from '@/services/drink'
+import { getPriceWithDiscount } from '@/services/drink'
+import { truncate } from '@/utils/text'
 
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
 import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'

@@ -173,7 +173,7 @@ const types = computed(() => [
   { name: 'Разливное пиво', value: 'draft' },
   { name: 'Баночное пиво', value: 'banned' },
   { name: 'Сливочное пиво', value: 'butter' },
-  { name: 'Безалкогольное пиво', value: 'non-alcoholic' },
+  { name: 'Безалкогольные напитки', value: 'non-alcoholic' },
   { name: 'Фильтрованное', value: 'filtered' },
   { name: 'Светлое', value: 'light' },
   { name: 'Темное', value: 'dark' },

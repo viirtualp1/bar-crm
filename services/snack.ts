@@ -1,4 +1,4 @@
-import { DiscountData, FoodData, SnackData } from '@/types/product'
+import { DiscountData, FoodData, ServiceData, SnackData } from '@/types/product'
 import {
   collection,
   getDocs,
@@ -15,6 +15,7 @@ import {
   uploadBytes,
 } from 'firebase/storage'
 
+// getters
 export function getSnacks() {
   const { $db: db } = useNuxtApp()
 
@@ -33,6 +34,13 @@ export function getDiscountProducts() {
   return getDocs(query(collection(db, 'discount')))
 }
 
+export function getServices() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'services')))
+}
+
+// post
 export function postSnack(data: SnackData) {
   const { $db: db } = useNuxtApp()
 
@@ -51,11 +59,38 @@ export function postDiscountProduct(data: DiscountData) {
   return setDoc(doc(db, 'discount', data.id), data)
 }
 
+export function postService(data: ServiceData) {
+  const { $db: db } = useNuxtApp()
+
+  return setDoc(doc(db, 'services', data.id), data)
+}
+
+// delete
 export function deleteSnack(id: string) {
   const { $db: db } = useNuxtApp()
 
   return deleteDoc(doc(db, 'snacks', id))
 }
+
+export function deleteFood(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'food', id))
+}
+
+export function deleteDiscount(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'discount', id))
+}
+
+export function deleteService(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'services', id))
+}
+
+// image
 
 export function uploadSnackImage(id: string, file: File) {
   const { $storage: storage } = useNuxtApp()

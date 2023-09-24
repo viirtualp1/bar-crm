@@ -53,6 +53,8 @@
     <drink-modal
       v-model="isDrinkModalOpen"
       :drink="drink"
+      :bottle="bottle"
+      :boules="boules"
       @close="closeDrinkModal"
     />
   </v-card>
@@ -71,6 +73,14 @@ const props = defineProps({
     type: Object as PropType<DrinkData>,
     default: null,
   },
+  boules: {
+    type: Boolean,
+    default: false,
+  },
+  bottle: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
@@ -82,8 +92,6 @@ const priceWithDiscount = computed(() => {
 
   return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
 })
-
-onMounted(() => {})
 </script>
 
 <style lang="scss" src="./DrinkCard.scss"></style>

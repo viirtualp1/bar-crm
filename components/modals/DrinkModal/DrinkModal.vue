@@ -27,8 +27,15 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
-import { deleteDrink, postDrink } from '@/services/drink'
+import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
+import {
+  deleteDrink,
+  postDrink,
+  postBottle,
+  postBoules,
+  deleteBottle,
+  deleteBoules,
+} from '@/services/drink'
 
 import DrinkModalBody from './DrinkModalBody/DrinkModalBody.vue'
 import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
@@ -46,6 +53,14 @@ const props = defineProps({
   drink: {
     type: Object as PropType<DrinkData>,
     default: null,
+  },
+  bottle: {
+    type: Boolean,
+    default: false,
+  },
+  boules: {
+    type: Boolean,
+    default: false,
   },
 })
 
@@ -66,6 +81,18 @@ watch(
 const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
+  if (props.boules) {
+    await deleteBoules(props.drink.id)
+
+    return location.reload()
+  }
+
+  if (props.bottle) {
+    await deleteBottle(props.drink.id)
+
+    return location.reload()
+  }
+
   await deleteDrink(props.drink.id)
 
   location.reload()
@@ -75,11 +102,19 @@ function onEditProduct() {
   currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
 }
 
-async function submitEditProduct(form: DrinkData) {
+async function submitEditProduct(form: DrinkData | BottleDrink | BoulesDrink) {
   isLoading.value = true
 
   try {
-    await postDrink(form)
+    if (props.bottle) {
+      return await postBottle(form)
+    }
+
+    if (props.boules) {
+      return await postBoules(form)
+    }
+
+    return await postDrink(form)
   } catch (err) {
     console.error(err)
   } finally {

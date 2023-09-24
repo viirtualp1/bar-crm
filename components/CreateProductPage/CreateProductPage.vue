@@ -22,6 +22,22 @@
       @submit="addProduct"
     />
 
+    <drink-form
+      v-if="type === ProductEnum.BOULES"
+      :form="formBoulesDrink"
+      :is-readonly="isLoading"
+      :loading="isLoading"
+      @submit="addProduct"
+    />
+
+    <drink-form
+      v-if="type === ProductEnum.BOTTLE"
+      :form="formBottleDrink"
+      :is-readonly="isLoading"
+      :loading="isLoading"
+      @submit="addProduct"
+    />
+
     <snack-form
       v-if="type === ProductEnum.SNACK"
       :form="formSnack"
@@ -45,6 +61,14 @@
       :loading="isLoading"
       @submit="addProduct"
     />
+
+    <snack-form
+      v-if="type === ProductEnum.SERVICES"
+      :form="formServices"
+      :is-readonly="isLoading"
+      :loading="isLoading"
+      @submit="addProduct"
+    />
   </v-container>
 </template>
 
@@ -57,11 +81,19 @@ import {
   FoodData,
   ProductEnum,
   ProductType,
+  ServiceData,
   SnackData,
+  BottleDrink,
+  BoulesDrink,
 } from '@/types/product'
 
-import { postDrink } from '@/services/drink'
-import { postFood, postSnack, postDiscountProduct } from '@/services/snack'
+import { postDrink, postBottle, postBoules } from '@/services/drink'
+import {
+  postFood,
+  postSnack,
+  postDiscountProduct,
+  postService,
+} from '@/services/snack'
 import { toast } from '@/services/toast'
 
 import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
@@ -71,6 +103,38 @@ const isLoading = ref(false)
 
 const formDrink = reactive<DrinkData>({
   type: ProductEnum.DRINK,
+  id: uuidv4(),
+  name: '',
+  priceLittleSize: 0,
+  priceBigSize: 0,
+  locations: [],
+  images: [],
+  discount: 0,
+  description: '',
+  density: 0,
+  strength: 0,
+  types: [],
+  inStock: true,
+})
+
+const formBoulesDrink = reactive<BoulesDrink>({
+  type: ProductEnum.BOULES,
+  id: uuidv4(),
+  name: '',
+  priceLittleSize: 0,
+  priceBigSize: 0,
+  locations: [],
+  images: [],
+  discount: 0,
+  description: '',
+  density: 0,
+  strength: 0,
+  types: [],
+  inStock: true,
+})
+
+const formBottleDrink = reactive<BottleDrink>({
+  type: ProductEnum.BOTTLE,
   id: uuidv4(),
   name: '',
   priceLittleSize: 0,
@@ -124,6 +188,19 @@ const formDiscount = reactive<DiscountData>({
   inStock: true,
 })
 
+const formServices = reactive<ServiceData>({
+  type: ProductEnum.SERVICES,
+  id: uuidv4(),
+  name: '',
+  price: 0,
+  locations: [],
+  images: [],
+  discount: 0,
+  description: '',
+  types: [],
+  inStock: true,
+})
+
 const type = ref<ProductType>(ProductEnum.DRINK)
 
 const types = computed(() => [
@@ -131,6 +208,9 @@ const types = computed(() => [
   { value: 'Snack', name: 'Закуска' },
   { value: 'Food', name: 'Кухня' },
   { value: 'Discount', name: 'Скидки' },
+  { value: 'Services', name: 'Услуги' },
+  { value: 'Boules', name: 'Були' },
+  { value: 'Bottle', name: 'Бутылочное пиво' },
 ])
 
 async function addProduct() {
@@ -146,6 +226,12 @@ async function addProduct() {
         return await postFood(formFood)
       case ProductEnum.DISCOUNT:
         return await postDiscountProduct(formDiscount)
+      case ProductEnum.SERVICES:
+        return await postService(formServices)
+      case ProductEnum.BOTTLE:
+        return await postBottle(formBottleDrink)
+      case ProductEnum.BOULES:
+        return await postBoules(formBoulesDrink)
     }
 
     location.reload()

@@ -139,13 +139,13 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
+import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
 import { shops } from '@/services/shops'
-import { getPriceWithDiscount } from '~/services/drink'
+import { getPriceWithDiscount } from '@/services/drink'
 
 const props = defineProps({
   form: {
-    type: Object as PropType<DrinkData>,
+    type: Object as PropType<DrinkData | BottleDrink | BoulesDrink>,
     default: null,
   },
   edit: {
@@ -163,11 +163,11 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  submit: (_form: DrinkData) => true,
-  'submit:edit': (_form: DrinkData) => true,
+  submit: (_form: DrinkData | BottleDrink | BoulesDrink) => true,
+  'submit:edit': (_form: DrinkData | BottleDrink | BoulesDrink) => true,
 })
 
-const currentForm = ref<DrinkData>(props.form)
+const currentForm = ref<DrinkData | BottleDrink | BoulesDrink>(props.form)
 
 const types = computed(() => [
   { name: 'Разливное пиво', value: 'draft' },

@@ -30,7 +30,9 @@
     </template>
 
     <v-card-text>
-      <div class="snack-card__price">{{ snack.price }} ₽</div>
+      <div class="snack-card__price" v-if="snack.price">
+        {{ snack.price }} ₽
+      </div>
 
       <div class="snack-card__description">
         {{ snack.description }}
@@ -58,6 +60,9 @@
         v-model="isSnackModalOpen"
         :snack="snack"
         @close="closeSnackModal"
+        :food="food"
+        :discount="discount"
+        :service="service"
       />
     </v-card-text>
   </v-card>
@@ -74,6 +79,18 @@ defineProps({
   snack: {
     type: Object as PropType<SnackData>,
     default: null,
+  },
+  food: {
+    type: Boolean,
+    default: false,
+  },
+  discount: {
+    type: Boolean,
+    default: false,
+  },
+  service: {
+    type: Boolean,
+    default: false,
   },
 })
 

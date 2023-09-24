@@ -6,7 +6,7 @@ import {
   doc,
   setDoc,
 } from 'firebase/firestore'
-import { DrinkData } from '@/types/product'
+import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
 import {
   deleteObject,
   getDownloadURL,
@@ -15,11 +15,27 @@ import {
   uploadBytes,
 } from 'firebase/storage'
 
+// get
+
 export function getDrinks() {
   const { $db: db } = useNuxtApp()
 
   return getDocs(query(collection(db, 'drinks')))
 }
+
+export function getBottle() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'bottle')))
+}
+
+export function getBoules() {
+  const { $db: db } = useNuxtApp()
+
+  return getDocs(query(collection(db, 'boules')))
+}
+
+// post
 
 export function postDrink(data: DrinkData) {
   const { $db: db } = useNuxtApp()
@@ -27,10 +43,36 @@ export function postDrink(data: DrinkData) {
   return setDoc(doc(db, 'drinks', data.id), data)
 }
 
+export function postBottle(data: BottleDrink) {
+  const { $db: db } = useNuxtApp()
+
+  return setDoc(doc(db, 'bottle', data.id), data)
+}
+
+export function postBoules(data: BoulesDrink) {
+  const { $db: db } = useNuxtApp()
+
+  return setDoc(doc(db, 'boules', data.id), data)
+}
+
+// delete
+
 export function deleteDrink(id: string) {
   const { $db: db } = useNuxtApp()
 
   return deleteDoc(doc(db, 'drinks', id))
+}
+
+export function deleteBottle(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'bottle', id))
+}
+
+export function deleteBoules(id: string) {
+  const { $db: db } = useNuxtApp()
+
+  return deleteDoc(doc(db, 'boules', id))
 }
 
 export function uploadDrinkImage(id: string, file: File) {

@@ -14,7 +14,7 @@
 
       <template v-else>
         <template v-for="drink in showedDrinks" :key="drink.id">
-          <v-col v-if="currentTab === 0 && drink.name" cols="12" md="4">
+          <v-col v-show="currentTab === 0 && drink.isShow" cols="12" md="4">
             <drink-card :drink="drink" />
           </v-col>
         </template>
@@ -209,13 +209,17 @@ async function fetchData() {
 }
 
 const showedDrinks = computed(() => {
-  return drinks.value.filter((drink) => {
-    return (
+  return drinks.value.map((drink) => {
+    const includes =
       !drink.types.includes('draft') &&
       !drink.types.includes('non-alcoholic') &&
       !drink.types.includes('boules') &&
       !drink.types.includes('bottle')
-    )
+
+    return {
+      ...drink,
+      isShow: includes,
+    }
   })
 })
 

@@ -82,12 +82,24 @@ const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
   if (props.boules) {
+    if (props.drink.types.includes('boules')) {
+      await deleteDrink(props.drink.id)
+
+      return location.reload()
+    }
+
     await deleteBoules(props.drink.id)
 
     return location.reload()
   }
 
   if (props.bottle) {
+    if (props.drink.types.includes('bottle')) {
+      await deleteDrink(props.drink.id)
+
+      return location.reload()
+    }
+
     await deleteBottle(props.drink.id)
 
     return location.reload()
@@ -107,10 +119,18 @@ async function submitEditProduct(form: DrinkData | BottleDrink | BoulesDrink) {
 
   try {
     if (props.bottle) {
+      if (props.drink.types.includes('bottle')) {
+        return await postDrink(form)
+      }
+
       return await postBottle(form)
     }
 
     if (props.boules) {
+      if (props.drink.types.includes('boules')) {
+        return await postDrink(form)
+      }
+
       return await postBoules(form)
     }
 

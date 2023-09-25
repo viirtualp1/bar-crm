@@ -103,6 +103,8 @@ export const types = {
   filtered: 'Фильтрованное',
   light: 'Светлое',
   dark: 'Темное',
+  boules: 'Були',
+  bottle: 'Бутылочное пиво',
 }
 
 export function getPriceWithDiscount(price: number, discount: number) {

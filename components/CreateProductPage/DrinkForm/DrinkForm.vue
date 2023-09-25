@@ -177,6 +177,8 @@ const types = computed(() => [
   { name: 'Фильтрованное', value: 'filtered' },
   { name: 'Светлое', value: 'light' },
   { name: 'Темное', value: 'dark' },
+  { name: 'Були', value: 'boules' },
+  { name: 'Бутылочное пиво', value: 'bottle' },
 ])
 
 const priceLittleWithDiscount = computed(() => {

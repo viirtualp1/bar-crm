@@ -30,6 +30,7 @@
     </template>
 
     <v-card-text>
+      <div v-if="!snack.inStock" class="snack-card__price">Нет в наличии</div>
       <div class="snack-card__price" v-if="snack.price">
         {{ snack.price }} ₽
       </div>

@@ -1,5 +1,10 @@
 <template>
   <div class="snack-modal-body">
+    <div v-if="!snack.inStock" class="snack-modal-body__price">
+      Нет в наличии
+    </div>
+    <div v-else class="snack-modal-body__price">{{ snack.price }} ₽</div>
+
     <div class="mb-4">{{ snack.description }}</div>
 
     <div class="snack-modal-body__locations">

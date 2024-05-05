@@ -17,6 +17,12 @@ export enum ProductEnum {
   BOTTLE = 'Bottle',
 }
 
+export interface PriceData {
+  default: number | null
+  small?: number
+  big?: number
+}
+
 export interface ProductData {
   id: string
   name: string
@@ -26,48 +32,27 @@ export interface ProductData {
   locations: number[]
   types: string[]
   inStock: boolean
+  price: PriceData
 }
 
 export type DrinkData = ProductData & {
   type: ProductEnum.DRINK
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
-}
-
-export type BoulesDrink = ProductData & {
-  type: ProductEnum.BOULES
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
-}
-
-export type BottleDrink = ProductData & {
-  type: ProductEnum.BOTTLE
-  priceLittleSize: number
-  priceBigSize: number
   density?: number
   strength?: number
 }
 
 export type SnackData = ProductData & {
   type: ProductEnum.SNACK
-  price: number
 }
 
 export type FoodData = ProductData & {
   type: ProductEnum.FOOD
-  price: number
 }
 
 export type DiscountData = ProductData & {
   type: ProductEnum.DISCOUNT
-  price: number
 }
 
 export type ServiceData = ProductData & {
   type: ProductEnum.SERVICES
-  price: number
 }

@@ -75,7 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import { DiscountData, FoodData, ServiceData, SnackData } from '@/types/product'
+import type {
+  DiscountData,
+  FoodData,
+  ServiceData,
+  SnackData,
+} from '@/types/product'
 import { shops } from '@/services/shops'
 
 const props = defineProps({

@@ -1,9 +1,9 @@
 <template>
-  <v-container class="create-product-page">
-    <h1 class="create-product-page__title">Добавить продукт</h1>
+  <v-container class="create-product-form">
+    <h1 class="create-product-form__title">Добавить продукт</h1>
 
     <v-select
-      class="create-product-page__type"
+      class="create-product-form__type"
       v-model="type"
       variant="outlined"
       label="Тип продукта"
@@ -73,135 +73,50 @@
 </template>
 
 <script setup lang="ts">
-import { uuidv4 } from '@firebase/util'
-
-import {
-  DiscountData,
-  DrinkData,
-  FoodData,
-  ProductEnum,
-  ProductType,
-  ServiceData,
-  SnackData,
-  BottleDrink,
-  BoulesDrink,
-} from '@/types/product'
-
-import { postDrink, postBottle, postBoules } from '@/services/drink'
-import {
-  postFood,
-  postSnack,
-  postDiscountProduct,
-  postService,
-} from '@/services/snack'
+import { ProductEnum, type ProductType } from '@/types/product'
 import { toast } from '@/services/toast'
-
-import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
-import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
-
-const isLoading = ref(false)
-
-const formDrink = reactive<DrinkData>({
-  type: ProductEnum.DRINK,
-  id: uuidv4(),
-  name: '',
-  priceLittleSize: 0,
-  priceBigSize: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  density: 0,
-  strength: 0,
-  types: [],
-  inStock: true,
-})
-
-const formBoulesDrink = reactive<BoulesDrink>({
-  type: ProductEnum.BOULES,
-  id: uuidv4(),
-  name: '',
-  priceLittleSize: 0,
-  priceBigSize: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  density: 0,
-  strength: 0,
-  types: [],
-  inStock: true,
-})
-
-const formBottleDrink = reactive<BottleDrink>({
-  type: ProductEnum.BOTTLE,
-  id: uuidv4(),
-  name: '',
-  priceLittleSize: 0,
-  priceBigSize: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  density: 0,
-  strength: 0,
-  types: [],
-  inStock: true,
-})
-
-const formSnack = reactive<SnackData>({
-  type: ProductEnum.SNACK,
-  id: uuidv4(),
-  name: '',
-  price: 0,
-  images: [],
-  locations: [],
-  discount: 0,
-  description: '',
-  types: [],
-  inStock: true,
-})
-
-const formFood = reactive<FoodData>({
-  type: ProductEnum.FOOD,
-  id: uuidv4(),
-  name: '',
-  price: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  types: [],
-  inStock: true,
-})
-
-const formDiscount = reactive<DiscountData>({
-  type: ProductEnum.DISCOUNT,
-  id: uuidv4(),
-  name: '',
-  price: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  types: [],
-  inStock: true,
-})
-
-const formServices = reactive<ServiceData>({
-  type: ProductEnum.SERVICES,
-  id: uuidv4(),
-  name: '',
-  price: 0,
-  locations: [],
-  images: [],
-  discount: 0,
-  description: '',
-  types: [],
-  inStock: true,
-})
+import { getPureFormData } from '@/utils/form'
+import SnackForm from './SnackForm/SnackForm.vue'
+import DrinkForm from './DrinkForm/DrinkForm.vue'
+import { createProduct } from '~/services/product'
 
 const type = ref<ProductType>(ProductEnum.DRINK)
+const isLoading = ref(false)
+
+const formDrink = reactive({
+  type: ProductEnum.DRINK,
+  ...getPureFormData(),
+})
+
+const formBoulesDrink = reactive({
+  type: ProductEnum.BOULES,
+  ...getPureFormData(),
+})
+
+const formBottleDrink = reactive({
+  type: ProductEnum.BOTTLE,
+  ...getPureFormData(),
+})
+
+const formSnack = reactive({
+  type: ProductEnum.SNACK,
+  ...getPureFormData(),
+})
+
+const formFood = reactive({
+  type: ProductEnum.FOOD,
+  ...getPureFormData(),
+})
+
+const formDiscount = reactive({
+  type: ProductEnum.DISCOUNT,
+  ...getPureFormData(),
+})
+
+const formServices = reactive({
+  type: ProductEnum.SERVICES,
+  ...getPureFormData(),
+})
 
 const types = computed(() => [
   { value: 'Drink', name: 'Напиток' },
@@ -219,19 +134,19 @@ async function addProduct() {
   try {
     switch (type.value) {
       case ProductEnum.DRINK:
-        return await postDrink(formDrink)
+        return await createProduct('drink', formDrink)
       case ProductEnum.SNACK:
-        return await postSnack(formSnack)
+        return await createProduct(formSnack)
       case ProductEnum.FOOD:
-        return await postFood(formFood)
+        return await createProduct(formFood)
       case ProductEnum.DISCOUNT:
-        return await postDiscountProduct(formDiscount)
+        return await createProduct(formDiscount)
       case ProductEnum.SERVICES:
-        return await postService(formServices)
+        return await createProduct(formServices)
       case ProductEnum.BOTTLE:
-        return await postBottle(formBottleDrink)
+        return await createProduct(formBottleDrink)
       case ProductEnum.BOULES:
-        return await postBoules(formBoulesDrink)
+        return await createProduct(formBoulesDrink)
     }
 
     location.reload()
@@ -248,4 +163,4 @@ async function addProduct() {
 }
 </script>
 
-<style lang="scss" src="./CreateProductPage.scss"></style>
+<style lang="scss" src="./CreateProductForm.scss"></style>

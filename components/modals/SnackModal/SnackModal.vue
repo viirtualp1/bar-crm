@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { DiscountData, FoodData, SnackData } from '@/types/product'
+import type { DiscountData, FoodData, SnackData } from '@/types/product'
 import {
   deleteSnack,
   postFood,
@@ -37,9 +37,9 @@ import {
   deleteFood,
   deleteDiscount,
   deleteService,
-} from '@/services/snack'
+} from '~/services/product'
 
-import SnackForm from '@/components/CreateProductPage/SnackForm/SnackForm.vue'
+import SnackForm from '@/components/CreateProductForm/SnackForm/SnackForm.vue'
 import SnackModalBody from '@/components/modals/SnackModal/SnackModalBody/SnackModalBody.vue'
 
 enum Modes {

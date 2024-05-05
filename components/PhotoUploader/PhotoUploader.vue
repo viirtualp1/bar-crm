@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import { truncate } from '@/utils/text'
-import { uploadDrinkImage, removeDrinkImage } from '@/services/drink'
-import { uploadSnackImage, removeSnackImage } from '@/services/snack'
+import { uploadDrinkImage, removeDrinkImage } from '~/utils/drink'
+import { uploadSnackImage, removeSnackImage } from '~/services/product'
 
 const props = defineProps({
   id: {

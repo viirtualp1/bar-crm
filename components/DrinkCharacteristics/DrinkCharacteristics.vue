@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
-import { locations, types } from '@/services/drink'
+import type { DrinkData } from '@/types/product'
+import { locations, types } from '~/utils/drink'
 
 defineProps({
   drink: {

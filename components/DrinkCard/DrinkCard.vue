@@ -37,13 +37,13 @@
         </div>
 
         <div class="drink-card__discount-without">
-          {{ drink.priceLittleSize }} ₽
+          {{ drink.price.small }} ₽
         </div>
       </div>
 
-      <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
+      <div v-else class="drink-card__price">{{ drink.price.default }} ₽</div>
 
-      <div class="drink-card__description">
+      <div v-if="drink.description" class="drink-card__description">
         {{ truncate(drink.description) }}
       </div>
 
@@ -61,8 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
-import { getPriceWithDiscount } from '@/services/drink'
+import type { DrinkData } from '@/types/product'
+import { getPriceWithDiscount } from '~/utils/drink'
 import { truncate } from '@/utils/text'
 
 import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
@@ -90,7 +90,7 @@ const priceWithDiscount = computed(() => {
     return 0
   }
 
-  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+  return getPriceWithDiscount(props.drink.price.default, props.drink.discount)
 })
 </script>
 

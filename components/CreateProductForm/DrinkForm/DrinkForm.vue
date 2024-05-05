@@ -139,9 +139,9 @@
 </template>
 
 <script setup lang="ts">
-import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
+import type { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
 import { shops } from '@/services/shops'
-import { getPriceWithDiscount } from '@/services/drink'
+import { getPriceWithDiscount } from '~/utils/drink'
 
 const props = defineProps({
   form: {

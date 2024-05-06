@@ -1,10 +1,4 @@
-import type {
-  DiscountData,
-  DrinkData,
-  FoodData,
-  ServiceData,
-  SnackData,
-} from '@/types/product'
+import type { FormData } from '@/types/product'
 import {
   collection,
   getDocs,
@@ -26,7 +20,7 @@ export function getProducts(name: string) {
   return getDocs(query(collection(db, name)))
 }
 
-export function createProduct(name: string, data: Product) {
+export function createProduct(name: string, data: FormData) {
   const { $db: db } = useNuxtApp()
 
   return setDoc(doc(db, name, data.id), data)

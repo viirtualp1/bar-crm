@@ -1,20 +1,11 @@
-export type ProductType =
-  | 'Drink'
-  | 'Snack'
-  | 'Food'
-  | 'Discount'
-  | 'Services'
-  | 'Boules'
-  | 'Bottle'
+export type ProductType = 'drink' | 'snack' | 'food' | 'discount' | 'services'
 
 export enum ProductEnum {
-  DRINK = 'Drink',
-  SNACK = 'Snack',
-  FOOD = 'Food',
-  DISCOUNT = 'Discount',
-  SERVICES = 'Services',
-  BOULES = 'Boules',
-  BOTTLE = 'Bottle',
+  DRINK = 'drink',
+  SNACK = 'snack',
+  FOOD = 'food',
+  DISCOUNT = 'discount',
+  SERVICES = 'services',
 }
 
 export interface PriceData {
@@ -34,6 +25,8 @@ export interface ProductData {
   inStock: boolean
   price: PriceData
 }
+
+export type FormData = ProductData & { type: ProductType }
 
 export type DrinkData = ProductData & {
   type: ProductEnum.DRINK

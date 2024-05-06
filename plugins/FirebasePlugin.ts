@@ -14,7 +14,7 @@ export default defineNuxtPlugin(() => {
     measurementId,
   } = useAppConfig()
 
-  const firebaseConfig = {
+  const app = initializeApp({
     apiKey,
     authDomain,
     projectId,
@@ -22,10 +22,7 @@ export default defineNuxtPlugin(() => {
     messagingSenderId,
     appId,
     measurementId,
-  }
-
-  // @ts-ignore
-  const app = initializeApp(firebaseConfig)
+  })
 
   const db = getFirestore(app)
   const storage = getStorage(app)

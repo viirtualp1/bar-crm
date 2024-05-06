@@ -75,17 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import type {
-  DiscountData,
-  FoodData,
-  ServiceData,
-  SnackData,
-} from '@/types/product'
+import type { FormData } from '@/types/product'
 import { shops } from '@/services/shops'
 
 const props = defineProps({
   form: {
-    type: Object as PropType<SnackData | FoodData | DiscountData | ServiceData>,
+    type: Object as PropType<FormData>,
     default: null,
   },
   edit: {
@@ -103,24 +98,20 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  submit: (_form: SnackData | FoodData | DiscountData | ServiceData) => true,
-  'submit:edit': (_form: SnackData | FoodData | DiscountData | ServiceData) =>
-    true,
+  submit: (_form: FormData) => true,
+  'submit:edit': (_form: FormData) => true,
 })
 
-const currentForm = ref<SnackData | FoodData | DiscountData | ServiceData>(
-  props.form,
-)
+const currentForm = ref<FormData>(props.form)
 
 function submit() {
-  let event = 'submit'
-
   if (props.edit) {
-    event += ':edit'
+    emit('submit:edit', currentForm.value)
+
+    return
   }
 
-  // @ts-ignore
-  emit(event, currentForm.value)
+  emit('submit', currentForm.value)
 }
 </script>
 

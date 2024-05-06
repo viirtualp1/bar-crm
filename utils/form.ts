@@ -1,22 +1,7 @@
+import type { ProductData } from '@/types/product'
 import { uuidv4 } from '@firebase/util'
-import type { PriceData } from '@/types/product'
-import type { DrinkType, LocationData } from '@/utils/drink'
 
-interface FormData {
-  id: string
-  name: string
-  price: PriceData
-  locations: LocationData[]
-  images: string[]
-  discount: number
-  description: string | null
-  density: number
-  strength: number
-  types: DrinkType[]
-  inStock: boolean
-}
-
-export function getPureFormData(): FormData {
+export function getPureFormData(): ProductData {
   return {
     id: uuidv4(),
     name: '',
@@ -29,7 +14,5 @@ export function getPureFormData(): FormData {
     price: {
       default: null,
     },
-    density: 0,
-    strength: 0,
   }
 }

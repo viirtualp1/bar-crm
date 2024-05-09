@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
-<template></template>
+<template>
+  <div class="price-form"></div>
+</template>
 
 <style scoped lang="scss"></style>

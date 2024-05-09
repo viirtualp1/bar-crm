@@ -1,8 +1,8 @@
 export function getPriceWithDiscount(
-  price: number | undefined,
-  discount: number,
+  price: number | null | undefined,
+  discount: number | null | undefined,
 ) {
-  if (!price) {
+  if (!price || !discount) {
     return 0
   }
 

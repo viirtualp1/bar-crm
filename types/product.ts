@@ -14,16 +14,26 @@ export interface PriceData {
   big?: number
 }
 
+export enum DiscountSelectorType {
+  BIG = 0,
+  SMALL = 1,
+}
+
+export interface ProductDiscountData {
+  value: number | null
+  selector: DiscountSelectorType
+}
+
 export interface ProductData {
   id: string
   name: string
   images: string[]
   description?: string
-  discount?: number
   locations: number[]
   types: string[]
   inStock: boolean
   price: PriceData
+  discount?: ProductDiscountData | null
 }
 
 export type FormData = ProductData & { type: ProductType }

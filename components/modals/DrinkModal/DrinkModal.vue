@@ -28,10 +28,10 @@
 
 <script setup lang="ts">
 import type { DrinkData } from '@/types/product'
-import { deleteDrink, postDrink } from '~/utils/drink'
+import { deleteProduct, createProduct } from '@/services/product'
 
-import DrinkModalBody from './DrinkModalBody/DrinkModalBody.vue'
-import DrinkForm from '@/components/CreateProductForm/DrinkForm/DrinkForm.vue'
+import { DrinkForm } from '@/components/CreateProductForm/DrinkForm'
+import { DrinkModalBody } from './DrinkModalBody'
 
 enum Modes {
   EDIT = 'edit',
@@ -58,7 +58,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  close: () => undefined,
+  close: () => true,
 })
 
 const currentMode = ref<Modes>(Modes.VIEW)
@@ -74,7 +74,7 @@ watch(
 const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
-  await deleteDrink(props.drink.id)
+  await deleteProduct('drink', props.drink.id)
 
   location.reload()
 }
@@ -87,7 +87,7 @@ async function submitEditProduct(form: DrinkData) {
   isLoading.value = true
 
   try {
-    return await postDrink(form)
+    return await createProduct('drink', form)
   } catch (err) {
     console.error(err)
   } finally {

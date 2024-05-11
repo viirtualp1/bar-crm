@@ -21,7 +21,7 @@ export enum DiscountSelectorType {
 
 export interface ProductDiscountData {
   value: number | null
-  selector: DiscountSelectorType
+  selector: DiscountSelectorType | null
 }
 
 export interface ProductData {

@@ -164,7 +164,6 @@ const props = defineProps({
 
 const emit = defineEmits({
   submit: (_form: DrinkData) => true,
-  'submit:edit': (_form: DrinkData) => true,
 })
 
 const currentForm = ref<DrinkData>(props.form)
@@ -182,34 +181,19 @@ const types = computed(() => [
 ])
 
 const smallPriceWithDiscount = computed(() => {
-  if (!currentForm.value.discount) {
-    return 0
-  }
-
   const { price, discount } = currentForm.value
 
-  return getPriceWithDiscount(price.small, discount)
+  return getPriceWithDiscount(price.small, discount?.value)
 })
 
 const bigPriceWithDiscount = computed(() => {
-  if (!currentForm.value.discount) {
-    return 0
-  }
-
   const { price, discount } = currentForm.value
 
-  return getPriceWithDiscount(price.big, discount)
+  return getPriceWithDiscount(price.big, discount?.value)
 })
 
 function submit() {
-  let event = 'submit'
-
-  if (props.edit) {
-    event += ':edit'
-  }
-
-  // @ts-ignore
-  emit(event, currentForm.value)
+  emit('submit', currentForm.value)
 }
 </script>
 

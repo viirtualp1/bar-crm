@@ -12,6 +12,7 @@
       item-title="name"
       item-value="value"
       closable-chips
+      @update:model-value="onUpdateType"
     />
 
     <drink-form
@@ -57,13 +58,12 @@
 </template>
 
 <script setup lang="ts">
-import { ProductEnum } from '@/types/product'
-import { toast } from '@/services/toast'
+import { ProductEnum, type FormData, type ProductType } from '@/types/product'
 import { createProduct } from '@/services/product'
+import { toast } from '@/services/toast'
 import { getPureFormData } from '@/utils/form'
-import type { FormData } from '@/types/product'
-import SnackForm from './SnackForm/SnackForm.vue'
-import DrinkForm from './DrinkForm/DrinkForm.vue'
+import { SnackForm } from './SnackForm'
+import { DrinkForm } from './DrinkForm'
 
 const isLoading = ref(false)
 
@@ -79,6 +79,10 @@ const types = computed(() => [
   { value: 'discount', name: 'Скидки' },
   { value: 'services', name: 'Услуги' },
 ])
+
+function onUpdateType(type: ProductType) {
+  form.type = type
+}
 
 async function addProduct() {
   isLoading.value = true

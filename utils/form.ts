@@ -7,7 +7,10 @@ export function getPureFormData(): ProductData {
     name: '',
     images: [],
     description: '',
-    discount: 0,
+    discount: {
+      value: 0,
+      selector: null,
+    },
     locations: [],
     types: [],
     inStock: true,

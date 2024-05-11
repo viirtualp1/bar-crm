@@ -12,8 +12,7 @@
           v-if="currentMode === Modes.EDIT"
           :form="drinkForm"
           :loading="isLoading"
-          edit
-          @submit:edit="submitEditProduct"
+          @submit="submitEditProduct"
         />
       </v-card-text>
 
@@ -27,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
+import { useVModel } from '@vueuse/core'
 import type { DrinkData } from '@/types/product'
 import { deleteProduct, createProduct } from '@/services/product'
-
 import { DrinkForm } from '@/components/CreateProductForm/DrinkForm'
 import { DrinkModalBody } from './DrinkModalBody'
 
@@ -47,14 +46,6 @@ const props = defineProps({
     type: Object as PropType<DrinkData>,
     default: null,
   },
-  bottle: {
-    type: Boolean,
-    default: false,
-  },
-  boules: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const emit = defineEmits({
@@ -62,20 +53,14 @@ const emit = defineEmits({
 })
 
 const currentMode = ref<Modes>(Modes.VIEW)
+const currentValue = useVModel(props, 'value', emit)
 
-const currentValue = ref(false)
 const isLoading = ref(false)
-
-watch(
-  () => props.value,
-  () => (currentValue.value = props.value),
-)
 
 const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
   await deleteProduct('drink', props.drink.id)
-
   location.reload()
 }
 

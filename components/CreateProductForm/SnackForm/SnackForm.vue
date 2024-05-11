@@ -99,18 +99,11 @@ const props = defineProps({
 
 const emit = defineEmits({
   submit: (_form: FormData) => true,
-  'submit:edit': (_form: FormData) => true,
 })
 
 const currentForm = ref<FormData>(props.form)
 
 function submit() {
-  if (props.edit) {
-    emit('submit:edit', currentForm.value)
-
-    return
-  }
-
   emit('submit', currentForm.value)
 }
 </script>

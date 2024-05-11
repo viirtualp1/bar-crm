@@ -12,8 +12,7 @@
           v-if="currentMode === Modes.EDIT"
           :form="snackForm"
           :loading="isLoading"
-          edit
-          @submit:edit="submitEditProduct"
+          @submit="submitEditProduct"
         />
       </v-card-text>
 
@@ -27,20 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import type { DiscountData, FoodData, SnackData } from '@/types/product'
-import {
-  deleteSnack,
-  postFood,
-  postSnack,
-  postService,
-  postDiscountProduct,
-  deleteFood,
-  deleteDiscount,
-  deleteService,
-} from '~/services/product'
-
-import SnackForm from '@/components/CreateProductForm/SnackForm/SnackForm.vue'
-import SnackModalBody from '@/components/modals/SnackModal/SnackModalBody/SnackModalBody.vue'
+import type { ProductType, SnackData, FormData } from '@/types/product'
+import { deleteProduct, createProduct } from '@/services/product'
+import { SnackForm } from '@/components/CreateProductForm/SnackForm'
+import { SnackModalBody } from './SnackModalBody'
 
 enum Modes {
   EDIT = 'edit',
@@ -53,20 +42,12 @@ const props = defineProps({
     default: false,
   },
   snack: {
-    type: Object as PropType<SnackData>,
+    type: Object as PropType<FormData>,
     default: null,
   },
-  food: {
-    type: Boolean,
-    default: false,
-  },
-  discount: {
-    type: Boolean,
-    default: false,
-  },
-  service: {
-    type: Boolean,
-    default: false,
+  type: {
+    type: String as PropType<ProductType>,
+    default: 'snack',
   },
 })
 
@@ -90,25 +71,7 @@ watch(
 )
 
 async function onDeleteProduct() {
-  if (props.food) {
-    await deleteFood(props.snack.id)
-
-    return location.reload()
-  }
-
-  if (props.discount) {
-    await deleteDiscount(props.snack.id)
-
-    return location.reload()
-  }
-
-  if (props.service) {
-    await deleteService(props.snack.id)
-
-    return location.reload()
-  }
-
-  await deleteSnack(props.snack.id)
+  await deleteProduct(props.type, snackForm.value.id)
 
   return location.reload()
 }
@@ -117,23 +80,11 @@ function onEditProduct() {
   currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
 }
 
-async function submitEditProduct(form: SnackData | FoodData | DiscountData) {
+async function submitEditProduct(form: FormData) {
   isLoading.value = true
 
   try {
-    if (props.food) {
-      return await postFood(form)
-    }
-
-    if (props.discount) {
-      return await postDiscountProduct(form)
-    }
-
-    if (props.service) {
-      return await postService(form)
-    }
-
-    return await postSnack(form)
+    return await createProduct(props.type, form)
   } catch (err) {
     console.error(err)
   } finally {

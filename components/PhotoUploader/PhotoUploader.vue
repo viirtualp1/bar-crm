@@ -2,10 +2,11 @@
   <div class="photo-uploader">
     <div class="photo-uploader__input">
       <v-file-input
-        v-model="image"
+        v-model="images"
         label="Загрузите изображение"
         variant="outlined"
         hide-details="auto"
+        :disabled="isLoading"
         multiple
       />
 
@@ -20,6 +21,7 @@
         :key="idx"
         closable
         label
+        :disabled="isLoading"
         @click:close="remove(photo)"
       >
         <v-icon start icon="mdi-camera"></v-icon>
@@ -32,8 +34,7 @@
 
 <script setup lang="ts">
 import { truncate } from '@/utils/text'
-import { uploadDrinkImage, removeDrinkImage } from '@/services/drink'
-import { uploadSnackImage, removeSnackImage } from '@/services/snack'
+import { uploadProductImage, removeProductImage } from '@/services/product'
 
 const props = defineProps({
   id: {
@@ -55,28 +56,46 @@ const emit = defineEmits({
 })
 
 const currentImages = ref<string[]>([])
-const image = ref<File[]>()
+const images = ref<File[]>()
 
-function add() {
-  if (!image.value) {
+const isLoading = ref(false)
+
+const productName = computed(() => {
+  return props.drink ? 'drink' : 'snack'
+})
+
+async function add() {
+  if (!images.value) {
     return
   }
 
-  image.value?.forEach(async (image: File) => {
+  for (const image of images.value) {
     currentImages.value.push(image.name)
 
-    props.drink
-      ? await uploadDrinkImage(props.id, image)
-      : await uploadSnackImage(props.id, image)
-  })
+    isLoading.value = true
+
+    try {
+      await uploadProductImage(productName.value, props.id, image)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      isLoading.value = false
+    }
+  }
 
   emit('update:images', currentImages.value)
 }
 
 async function remove(image: string) {
-  props.drink
-    ? await removeDrinkImage(props.id, image)
-    : await removeSnackImage(props.id, image)
+  isLoading.value = true
+
+  try {
+    await removeProductImage(productName.value, props.id, image)
+  } catch (err) {
+    console.error(err)
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 

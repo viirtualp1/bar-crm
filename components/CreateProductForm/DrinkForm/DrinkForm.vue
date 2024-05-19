@@ -27,25 +27,25 @@
       <v-col cols="12">
         <v-text-field
           type="number"
-          v-model.number="currentForm.priceLittleSize"
+          v-model.number="currentForm.price.small"
           label="Цена"
           variant="outlined"
           prefix="₽"
           suffix="0.33"
           hide-details="auto"
-          :hint="`Цена со скидкой: ${priceLittleWithDiscount}`"
+          :hint="`Цена со скидкой: ${smallPriceWithDiscount}`"
           persistent-hint
         />
       </v-col>
       <v-col cols="12">
         <v-text-field
           type="number"
-          v-model.number="currentForm.priceBigSize"
+          v-model.number="currentForm.price.big"
           label="Цена"
           variant="outlined"
           prefix="₽"
           suffix="0,5"
-          :hint="`Цена со скидкой: ${priceBigWithDiscount}`"
+          :hint="`Цена со скидкой: ${bigPriceWithDiscount}`"
           persistent-hint
           hide-details="auto"
         />
@@ -139,13 +139,14 @@
 </template>
 
 <script setup lang="ts">
-import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
+import type { DrinkData } from '@/types/product'
+import type { FormData } from '@/types/product'
 import { shops } from '@/services/shops'
-import { getPriceWithDiscount } from '@/services/drink'
+import { getPriceWithDiscount } from '@/utils/price'
 
 const props = defineProps({
   form: {
-    type: Object as PropType<DrinkData | BottleDrink | BoulesDrink>,
+    type: Object as PropType<FormData>,
     default: null,
   },
   edit: {
@@ -163,11 +164,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  submit: (_form: DrinkData | BottleDrink | BoulesDrink) => true,
-  'submit:edit': (_form: DrinkData | BottleDrink | BoulesDrink) => true,
+  submit: (_form: FormData) => true,
 })
 
-const currentForm = ref<DrinkData | BottleDrink | BoulesDrink>(props.form)
+const currentForm = ref<FormData>(props.form)
 
 const types = computed(() => [
   { name: 'Разливное пиво', value: 'draft' },
@@ -181,35 +181,20 @@ const types = computed(() => [
   { name: 'Бутылочное пиво', value: 'bottle' },
 ])
 
-const priceLittleWithDiscount = computed(() => {
-  if (!currentForm.value.discount) {
-    return 0
-  }
+const smallPriceWithDiscount = computed(() => {
+  const { price, discount } = currentForm.value
 
-  const { priceLittleSize, discount } = currentForm.value
-
-  return getPriceWithDiscount(priceLittleSize, discount)
+  return getPriceWithDiscount(price.small, discount?.value)
 })
 
-const priceBigWithDiscount = computed(() => {
-  if (!currentForm.value.discount) {
-    return 0
-  }
+const bigPriceWithDiscount = computed(() => {
+  const { price, discount } = currentForm.value
 
-  const { priceBigSize, discount } = currentForm.value
-
-  return getPriceWithDiscount(priceBigSize, discount)
+  return getPriceWithDiscount(price.big, discount?.value)
 })
 
 function submit() {
-  let event = 'submit'
-
-  if (props.edit) {
-    event += ':edit'
-  }
-
-  // @ts-ignore
-  emit(event, currentForm.value)
+  emit('submit', currentForm.value)
 }
 </script>
 

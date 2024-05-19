@@ -1,5 +1,5 @@
-import { Ref } from 'vue'
-import { DrinkData } from '@/types/product'
+import type { Ref } from 'vue'
+import type { DrinkData } from '@/types/product'
 
 export default function useFilteredDrinks(drinks: Ref<DrinkData[]>) {
   const draftDrinks = computed(() => {

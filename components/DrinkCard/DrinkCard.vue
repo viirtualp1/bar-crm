@@ -1,5 +1,5 @@
 <template>
-  <v-card class="drink-card" @click="openDrinkModal">
+  <v-card class="drink-card" @click="open">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -31,66 +31,47 @@
 
     <v-card-text>
       <div v-if="!drink.inStock" class="drink-card__price">Нет в наличии</div>
-      <div class="drink-card__discount" v-else-if="drink.discount">
+      <div v-else-if="drink.discount" class="drink-card__discount">
         <div class="drink-card__discount-with drink-card__price">
           {{ priceWithDiscount }}
         </div>
 
         <div class="drink-card__discount-without">
-          {{ drink.priceLittleSize }} ₽
+          {{ drink.price.small }} ₽
         </div>
       </div>
 
-      <div v-else class="drink-card__price">{{ drink.priceLittleSize }} ₽</div>
+      <div v-else class="drink-card__price">{{ drink.price.default }} ₽</div>
 
-      <div class="drink-card__description">
+      <div v-if="drink.description" class="drink-card__description">
         {{ truncate(drink.description) }}
       </div>
 
       <drink-characteristics :drink="drink" />
     </v-card-text>
 
-    <drink-modal
-      v-model="isDrinkModalOpen"
-      :drink="drink"
-      :bottle="bottle"
-      :boules="boules"
-      @close="closeDrinkModal"
-    />
+    <drink-modal v-model="isOpen" :drink="drink" @close="close" />
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { DrinkData } from '@/types/product'
-import { getPriceWithDiscount } from '@/services/drink'
+import type { DrinkData } from '@/types/product'
+import { getPriceWithDiscount } from '@/utils/price'
 import { truncate } from '@/utils/text'
-
-import useDrinkModal from '@/components/modals/DrinkModal/useDrinkModal'
-import DrinkModal from '@/components/modals/DrinkModal/DrinkModal.vue'
+import { useModal } from '@/composables/useModal'
+import { DrinkModal } from '@/components/modals/DrinkModal'
 
 const props = defineProps({
   drink: {
     type: Object as PropType<DrinkData>,
     default: null,
   },
-  boules: {
-    type: Boolean,
-    default: false,
-  },
-  bottle: {
-    type: Boolean,
-    default: false,
-  },
 })
 
-const { isDrinkModalOpen, openDrinkModal, closeDrinkModal } = useDrinkModal()
+const { isOpen, open, close } = useModal()
 
 const priceWithDiscount = computed(() => {
-  if (!props.drink.discount) {
-    return 0
-  }
-
-  return getPriceWithDiscount(props.drink.priceLittleSize, props.drink.discount)
+  return getPriceWithDiscount(props.drink.price.default, props.drink.discount)
 })
 </script>
 

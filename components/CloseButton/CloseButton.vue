@@ -1,6 +1,6 @@
 <template>
   <v-btn class="close-button" size="x-small" icon @click="close">
-    <v-icon size="x-small">mdi-close</v-icon>
+    <v-icon class="close-button__icon" size="x-small">mdi-close</v-icon>
   </v-btn>
 </template>
 

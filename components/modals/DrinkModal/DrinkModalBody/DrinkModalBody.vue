@@ -47,8 +47,8 @@
 </template>
 
 <script setup lang="ts">
-import { getPriceWithDiscount } from '@/services/drink'
-import { DrinkData } from '@/types/product'
+import { getPriceWithDiscount } from '@/utils/price'
+import type { DrinkData } from '@/types/product'
 
 const props = defineProps({
   drink: {

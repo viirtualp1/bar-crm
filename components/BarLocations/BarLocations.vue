@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { locations } from '@/services/drink'
+import { locations } from '@/utils/drink'
 
 defineProps({
   locations: {

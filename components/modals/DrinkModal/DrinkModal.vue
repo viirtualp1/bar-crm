@@ -12,8 +12,7 @@
           v-if="currentMode === Modes.EDIT"
           :form="drinkForm"
           :loading="isLoading"
-          edit
-          @submit:edit="submitEditProduct"
+          @submit="submitEditProduct"
         />
       </v-card-text>
 
@@ -27,18 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { BottleDrink, BoulesDrink, DrinkData } from '@/types/product'
-import {
-  deleteDrink,
-  postDrink,
-  postBottle,
-  postBoules,
-  deleteBottle,
-  deleteBoules,
-} from '@/services/drink'
-
-import DrinkModalBody from './DrinkModalBody/DrinkModalBody.vue'
-import DrinkForm from '@/components/CreateProductPage/DrinkForm/DrinkForm.vue'
+import { useVModel } from '@vueuse/core'
+import type { DrinkData } from '@/types/product'
+import { deleteProduct, createProduct } from '@/services/product'
+import { DrinkForm } from '@/components/CreateProductForm/DrinkForm'
+import { DrinkModalBody } from './DrinkModalBody'
 
 enum Modes {
   EDIT = 'edit',
@@ -54,59 +46,21 @@ const props = defineProps({
     type: Object as PropType<DrinkData>,
     default: null,
   },
-  bottle: {
-    type: Boolean,
-    default: false,
-  },
-  boules: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const emit = defineEmits({
-  close: () => undefined,
+  close: () => true,
 })
 
 const currentMode = ref<Modes>(Modes.VIEW)
+const currentValue = useVModel(props, 'value', emit)
 
-const currentValue = ref(false)
 const isLoading = ref(false)
-
-watch(
-  () => props.value,
-  () => (currentValue.value = props.value),
-)
 
 const drinkForm = ref<DrinkData>(props.drink)
 
 async function onDeleteDrink() {
-  if (props.boules) {
-    if (props.drink.types.includes('boules')) {
-      await deleteDrink(props.drink.id)
-
-      return location.reload()
-    }
-
-    await deleteBoules(props.drink.id)
-
-    return location.reload()
-  }
-
-  if (props.bottle) {
-    if (props.drink.types.includes('bottle')) {
-      await deleteDrink(props.drink.id)
-
-      return location.reload()
-    }
-
-    await deleteBottle(props.drink.id)
-
-    return location.reload()
-  }
-
-  await deleteDrink(props.drink.id)
-
+  await deleteProduct('drink', props.drink.id)
   location.reload()
 }
 
@@ -114,27 +68,11 @@ function onEditProduct() {
   currentMode.value = currentMode.value === Modes.EDIT ? Modes.VIEW : Modes.EDIT
 }
 
-async function submitEditProduct(form: DrinkData | BottleDrink | BoulesDrink) {
+async function submitEditProduct(form: DrinkData) {
   isLoading.value = true
 
   try {
-    if (props.bottle) {
-      if (props.drink.types.includes('bottle')) {
-        return await postDrink(form)
-      }
-
-      return await postBottle(form)
-    }
-
-    if (props.boules) {
-      if (props.drink.types.includes('boules')) {
-        return await postDrink(form)
-      }
-
-      return await postBoules(form)
-    }
-
-    return await postDrink(form)
+    return await createProduct('drink', form)
   } catch (err) {
     console.error(err)
   } finally {

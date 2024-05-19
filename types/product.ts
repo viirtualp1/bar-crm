@@ -1,20 +1,27 @@
-export type ProductType =
-  | 'Drink'
-  | 'Snack'
-  | 'Food'
-  | 'Discount'
-  | 'Services'
-  | 'Boules'
-  | 'Bottle'
+export type ProductType = 'drink' | 'snack' | 'food' | 'discount' | 'services'
 
 export enum ProductEnum {
-  DRINK = 'Drink',
-  SNACK = 'Snack',
-  FOOD = 'Food',
-  DISCOUNT = 'Discount',
-  SERVICES = 'Services',
-  BOULES = 'Boules',
-  BOTTLE = 'Bottle',
+  DRINK = 'drink',
+  SNACK = 'snack',
+  FOOD = 'food',
+  DISCOUNT = 'discount',
+  SERVICES = 'services',
+}
+
+export interface PriceData {
+  default: number | null
+  small?: number
+  big?: number
+}
+
+export enum DiscountSelectorType {
+  BIG = 0,
+  SMALL = 1,
+}
+
+export interface ProductDiscountData {
+  value: number | null
+  selector: DiscountSelectorType | null
 }
 
 export interface ProductData {
@@ -22,52 +29,33 @@ export interface ProductData {
   name: string
   images: string[]
   description?: string
-  discount?: number
   locations: number[]
   types: string[]
   inStock: boolean
+  price: PriceData
+  discount?: ProductDiscountData | null
 }
+
+export type FormData = ProductData & { type: ProductType }
 
 export type DrinkData = ProductData & {
   type: ProductEnum.DRINK
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
-}
-
-export type BoulesDrink = ProductData & {
-  type: ProductEnum.BOULES
-  priceLittleSize: number
-  priceBigSize: number
-  density?: number
-  strength?: number
-}
-
-export type BottleDrink = ProductData & {
-  type: ProductEnum.BOTTLE
-  priceLittleSize: number
-  priceBigSize: number
   density?: number
   strength?: number
 }
 
 export type SnackData = ProductData & {
   type: ProductEnum.SNACK
-  price: number
 }
 
 export type FoodData = ProductData & {
   type: ProductEnum.FOOD
-  price: number
 }
 
 export type DiscountData = ProductData & {
   type: ProductEnum.DISCOUNT
-  price: number
 }
 
 export type ServiceData = ProductData & {
   type: ProductEnum.SERVICES
-  price: number
 }

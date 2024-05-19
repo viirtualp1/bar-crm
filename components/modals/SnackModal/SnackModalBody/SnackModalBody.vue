@@ -29,8 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { SnackData } from '@/types/product'
-import { locations } from '@/services/drink'
+import type { SnackData } from '@/types/product'
+import { locations } from '~/utils/drink'
 
 defineProps({
   snack: {

@@ -1,5 +1,5 @@
-import type { ProductData } from '@/types/product'
 import { uuidv4 } from '@firebase/util'
+import type { DrinkData, ProductData } from '@/types/product'
 
 export function getPureFormData(): ProductData {
   return {
@@ -17,5 +17,13 @@ export function getPureFormData(): ProductData {
     price: {
       default: null,
     },
+  }
+}
+
+export function getDrinkFormData(): DrinkData {
+  return {
+    ...getPureFormData(),
+    strength: 0,
+    density: 0,
   }
 }

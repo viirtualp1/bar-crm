@@ -24,31 +24,7 @@
     />
 
     <snack-form
-      v-if="form.type === ProductEnum.SNACK"
-      :form="form"
-      :is-readonly="isLoading"
-      :loading="isLoading"
-      @submit="addProduct"
-    />
-
-    <snack-form
-      v-if="form.type === ProductEnum.FOOD"
-      :form="form"
-      :is-readonly="isLoading"
-      :loading="isLoading"
-      @submit="addProduct"
-    />
-
-    <snack-form
-      v-if="form.type === ProductEnum.DISCOUNT"
-      :form="form"
-      :is-readonly="isLoading"
-      :loading="isLoading"
-      @submit="addProduct"
-    />
-
-    <snack-form
-      v-if="form.type === ProductEnum.SERVICES"
+      v-else
       :form="form"
       :is-readonly="isLoading"
       :loading="isLoading"

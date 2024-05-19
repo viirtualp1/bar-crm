@@ -140,12 +140,13 @@
 
 <script setup lang="ts">
 import type { DrinkData } from '@/types/product'
+import type { FormData } from '@/types/product'
 import { shops } from '@/services/shops'
 import { getPriceWithDiscount } from '@/utils/price'
 
 const props = defineProps({
   form: {
-    type: Object as PropType<DrinkData>,
+    type: Object as PropType<FormData>,
     default: null,
   },
   edit: {
@@ -163,10 +164,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits({
-  submit: (_form: DrinkData) => true,
+  submit: (_form: FormData) => true,
 })
 
-const currentForm = ref<DrinkData>(props.form)
+const currentForm = ref<FormData>(props.form)
 
 const types = computed(() => [
   { name: 'Разливное пиво', value: 'draft' },

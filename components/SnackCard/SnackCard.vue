@@ -60,10 +60,10 @@
       <snack-modal
         v-model="isOpen"
         :snack="snack"
-        @close="close"
         :food="food"
         :discount="discount"
         :service="service"
+        @close="close"
       />
     </v-card-text>
   </v-card>
@@ -92,10 +92,6 @@ defineProps({
     type: Boolean,
     default: false,
   },
-})
-
-const emit = defineEmits({
-  'open:modal': () => undefined,
 })
 
 const { isOpen, open, close } = useModal()

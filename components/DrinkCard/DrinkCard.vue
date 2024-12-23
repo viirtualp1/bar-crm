@@ -6,7 +6,7 @@
         color="deep-purple"
         height="4"
         indeterminate
-      ></v-progress-linear>
+      />
     </template>
 
     <v-img

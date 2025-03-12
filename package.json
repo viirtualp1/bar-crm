@@ -10,20 +10,18 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@mdi/font": "^7.4.47",
     "@nuxt/devtools": "latest",
-    "@types/node": "^18.17.3",
-    "nuxt": "^3.6.5"
-  },
-  "dependencies": {
-    "@mdi/font": "^7.2.96",
-    "axios": "^1.4.0",
-    "eslint": "^8.47.0",
-    "firebase": "^10.4.0",
-    "prettier": "^3.0.2",
-    "sass": "^1.66.1",
-    "sweetalert2": "^11.7.26",
+    "@types/node": "^20.12.8",
+    "axios": "^1.6.8",
+    "eslint": "^9.2.0",
+    "firebase": "^10.11.1",
+    "nuxt": "^3.11.2",
+    "prettier": "^3.2.5",
+    "sass": "^1.76.0",
+    "sweetalert2": "^11.10.8",
     "uuid": "^9.0.1",
-    "vercel": "^32.2.4",
-    "vuetify": "^3.3.13"
+    "vercel": "^34.1.8",
+    "vuetify": "^3.6.3"
   }
 }

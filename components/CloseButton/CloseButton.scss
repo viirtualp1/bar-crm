@@ -1,7 +1,5 @@
 .close-button {
-  .v-icon {
-    &::before {
-      font-size: 18px;
-    }
+  &__icon::before {
+    font-size: 18px;
   }
 }

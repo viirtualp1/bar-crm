@@ -1,5 +1,5 @@
 <template>
-  <v-card class="snack-card" @click="openSnackModal">
+  <v-card class="snack-card" @click="open">
     <template v-slot:loader="{ isActive }">
       <v-progress-linear
         :active="isActive"
@@ -58,23 +58,22 @@
       </div>
 
       <snack-modal
-        v-model="isSnackModalOpen"
+        v-model="isOpen"
         :snack="snack"
-        @close="closeSnackModal"
         :food="food"
         :discount="discount"
         :service="service"
+        @close="close"
       />
     </v-card-text>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { SnackData } from '@/types/product'
-import { locations } from '@/services/drink'
-
-import useSnackModal from '@/components/modals/SnackModal/useSnackModal'
-import SnackModal from '@/components/modals/SnackModal/SnackModal.vue'
+import type { SnackData } from '@/types/product'
+import { locations } from '@/utils/drink'
+import { useModal } from '@/composables/useModal'
+import { SnackModal } from '@/components/modals/SnackModal'
 
 defineProps({
   snack: {
@@ -95,11 +94,7 @@ defineProps({
   },
 })
 
-const emit = defineEmits({
-  'open:modal': () => undefined,
-})
-
-const { isSnackModalOpen, openSnackModal, closeSnackModal } = useSnackModal()
+const { isOpen, open, close } = useModal()
 
 const getLocation = (location: number) =>
   locations[location as keyof typeof locations]

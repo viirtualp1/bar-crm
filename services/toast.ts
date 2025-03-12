@@ -1,6 +1,6 @@
 import Swal, {
-  SweetAlertOptions,
-  SweetAlertUpdatableParameters,
+  type SweetAlertOptions,
+  type SweetAlertUpdatableParameters,
 } from 'sweetalert2'
 
 export function toast(
